@@ -1,5 +1,5 @@
 from svc.forms.mechanic import MechanicForm
-from svc.forms.Job import JobForm
+from svc.forms.Job import JobForm, JobItemForm
 from svc.forms.service import ServiceForm
 from svc.forms.vendor import VendorForm, VendorPaymentForm
 from svc.forms.purchase_order import PurchaseOrderForm

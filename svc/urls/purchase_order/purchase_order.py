@@ -12,5 +12,4 @@ purchase_order_url_patterns = [
     path('purchase-orders/<int:pk>/delete/', PurchaseOrderDeleteView.as_view(), name='purchase-order-delete'),
     path('purchase-orders/<int:pk>/items/add/', PurchaseOrderItemCreateView.as_view(), name='add-item'),
     path('purchase-orders/items/<int:pk>/edit/', PurchaseOrderItemUpdateView.as_view(), name='edit-item'),
-
 ]

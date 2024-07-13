@@ -34,6 +34,6 @@ class ServiceForm(forms.ModelForm):
         job = kwargs.pop('job', None)
         super().__init__(*args, **kwargs)
         if job:
-            self.fields['job_hidden'].initial = job.pk
+            self.fields['job_hidden'].initial = job.pk   # NOQA
             self.fields['job'] = forms.CharField(initial=job, disabled=True, required=False)
             self.fields['job'].label = 'Job'

@@ -15,6 +15,7 @@
         {% if show_completion_time %}
           <th>Completion Time</th>
         {% endif %}
+        <th> Job Amount</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -29,6 +30,7 @@
           {% if show_completion_time %}
             <td>{{ job.job_completion_time }}</td>
           {% endif %}
+          <td>{{ job.job_amount }}</td>
           <td>
             <a href="{% url 'job_detail' job.pk %}" >View</a> |
             <a href="{% url 'job_delete' job.pk %}" >Delete</a>

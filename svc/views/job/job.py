@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.views.generic import (
     CreateView,
     ListView,
@@ -38,6 +39,7 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['services'] = Service.objects.filter(job=self.get_object())
+        context['total_service_cost'] = context['services'].aggregate(total_cost=Sum('cost'))['total_cost'] or 0
         return context
 
 
