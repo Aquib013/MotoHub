@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Vendors {% endblock %}
+
+{% block content %}
+<h2>Vendors</h2>
+    {% if vendors%}
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Firm Name</th>
+                <th>Vendor Name</th>
+                <th>Phone</th>
+                <th>Vendor Balance</th>
+                <th>Last Purchase</th>
+                <th>Last Payment Amount</th>
+                <th>Last Payment date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vendor in vendors %}
+                <tr>
+                  <td>{{ vendor.firm_name }}</td>
+                  <td>{{ vendor.vendor_name }}</td>
+                  <td>{{ vendor.vendor_contact_no }}</td>
+                  <td>{{ vendor.vendor_balance }}</td>
+                  <td>{{ vendor.last_purchase_date }}</td>
+                  <td>{{ vendor.last_payment_amount }}</td>
+                  <td>{{ vendor.last_payment_date }}</td>
+                  <td>
+                    <a href="{% url 'edit_vendor' vendor.pk %}" >Edit</a>  |
+                    <a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>  |
+                    <a href="{% url 'vendor-payment-history' vendor.pk %}">View Payments</a>  |
+                    <a href="{% url 'delete_vendor' vendor.pk %}" >Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_vendor' %}" >Create New Vendor</a>
+    {% else %}
+        <p>No Vendor Added</p>
+        <a href="{% url 'add_vendor' %}" >Create New Vendor</a>
+    {% endif %}
+{% endblock %}

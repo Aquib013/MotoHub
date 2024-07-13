@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Vendor Payment History {% endblock %}
+
+{% block content %}
+  <h2>Payment History for: {{ vendor.firm_name }}</h2>
+  {% if vendor.vendor_payments.exists %}
+  <table>
+    <tr>
+      <th>Payment Date</th>
+      <th>Amount</th>
+    </tr>
+    {% for payment in vendor.vendor_payments.all %}
+    <tr>
+      <td>{{ payment.created_at }}</td>
+      <td>{{ payment.pay_amount }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+<a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>  |
+<a href="{% url 'vendors' %}" >Back</a>
+
+  {% else %}
+    <p>No Payments made to this vendor yet.</p>
+<a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>
+
+  {% endif %}
+{% endblock %}

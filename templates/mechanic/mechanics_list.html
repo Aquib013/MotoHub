@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Mechanics{% endblock %}
+
+{% block content %}
+
+{% if mechanics %}
+<h1>Mechanic List</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Place</th>
+            <th>Balance</th>
+            <th>Dues</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mechanic in mechanics %}
+            <tr>
+                <td>{{ mechanic.mechanic_name }}</td>
+                <td>{{ mechanic.mechanic_mob_no }}</td>
+                <td>{{ mechanic.place }}</td>
+                <td>{{ mechanic.balance }}</td>
+                <td>{{ mechanic.dues }}</td>
+                <td>
+                    <a href="{% url 'edit_mechanic' mechanic.id %}">Edit</a> |
+                    <a href="{% url 'delete_mechanic' mechanic.id %}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    <a href="{% url 'add_mechanic' %}">Add New Mechanic</a>
+{% else %}
+<p>No Mechanics Added</p>
+<a href="{% url 'add_mechanic' %}">Add New Mechanic</a>
+{% endif %}
+{% endblock %}

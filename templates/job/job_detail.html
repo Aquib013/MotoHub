@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Job Details</h2>
+<p><strong>Job Number:</strong> {{ job.job_no }}</p>
+<p><strong>Customer:</strong> {{ job.mechanic }}</p>
+<p><strong>Status:</strong> {{ job.status }}</p>
+<p><strong>Completion Time:</strong> {{ job.job_completion_time }}</p>
+<h3>Services</h3>
+{% if services %}
+  <table class="table">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Service Type</th>
+      <th>Service For Vehicle</th>
+      <th>Cost</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for service in services %}
+      <tr>
+        <td>{{ service.name }}</td>
+        <td>{{ service.service_type }}</td>
+        <td>{{ service.vehicle }}</td>
+        <td>{{ service.cost }}</td>
+        <td>
+          <a href="{% url 'edit_service' service.pk %}" >Edit Service</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+{% else %}
+  <p>No services Added</p>
+{% endif %}
+
+<a href="{% url 'add_service' job.pk %}" >Add Service</a> |
+<a href="{% url 'jobs' %}" >Back to Jobs</a> |
+<a href="{% url 'job_edit' job.pk %}" >Edit Job</a> |
+<a href="{% url 'job_delete' job.pk %}" >Delete Job </a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Purchase Orders{% endblock %}
+
+{% block content %}
+{% if purchase_orders %}
+  <h2>Purchase Orders</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order Number</th>
+        <th>Vendor</th>
+        <th>PO Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in purchase_orders %}
+        <tr>
+          <td>{{ order.po_number }}</td>
+          <td>{{ order.vendor.vendor_name }}</td>
+          <td>{{ order.po_amount }}</td>
+          <td>
+            <a href="{% url 'purchase-order-detail' order.pk %}" >View</a>  |
+            <a href="{% url 'purchase-order-update' order.pk %}" >Edit</a>  |
+            <a href="{% url 'purchase-order-delete' order.pk %}" >Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+<a href="{% url 'purchase-order-create' %}" >Create New Purchase Order</a>
+
+{% else %}
+<p> No Purchase Order </p>
+<a href="{% url 'purchase-order-create' %}" >Create New Purchase Order</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Add Item {% endblock %}
+
+{% block content %}
+  <h2>Add Item to Purchase Order #{{ purchase_order.po_number }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" >Add Item</button>
+  </form>
+  <a href="{% url 'purchase-order-detail' purchase_order.pk %}" >Cancel</a>
+{% endblock %}

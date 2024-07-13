@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Delete PO {% endblock %}
+
+{% block content %}
+  <h2>Delete Purchase Order {{object.po_number}}</h2>
+  <p>Are you sure you want to delete this purchase order?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" >Delete</button>
+    <a href="{% url 'purchase-orders' %}" >Cancel</a>
+  </form>
+{% endblock %}

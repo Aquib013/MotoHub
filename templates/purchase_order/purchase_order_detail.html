@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Detail PO {% endblock %}
+
+{% block content %}
+  <h2>Purchase Order Details</h2>
+  <p><strong>Order Number:</strong> {{ object.po_number }}</p>
+  <p><strong>Vendor:</strong> {{ object.vendor.vendor_name }}</p>
+  <p><strong>PO Amount:</strong> {{ object.po_amount }}</p>
+  {% if object.purchase_order_item.exists %}
+    <h3> Items </h3>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Item MRP</th>
+        <th>Quantity</th>
+        <th>Discount Percentage</th>
+        <th>Net Price</th>
+        <th>Unit Price</th>
+        <th>Total Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in object.purchase_order_item.all %}
+        <tr>
+          <td>{{ item.item.item_name }}</td>
+          <td>{{ item.item_MRP }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.discount_percentage }}</td>
+          <td>{{ item.net_price }}</td>
+          <td>{{ item.unit_price }}</td>
+          <td>{{ item.total_amount }}</td>
+          <td>
+            <a href="{% url 'edit-item' item.pk %}" >Edit Item</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    <p>No Item in Purchase Order, Please Add Items</p>
+  {% endif %}
+
+  <!-- Add additional details as needed -->
+  <a href="{% url 'add-item' object.pk %}" >Add Item</a>  |
+
+  <a href="{% url 'purchase-orders' %}" >Back to Purchase Orders</a>  |
+  <a href="{% url 'purchase-order-update' object.pk %}" >Edit</a>  |
+  <a href="{% url 'purchase-order-delete' object.pk %}" >Delete</a>
+{% endblock %}

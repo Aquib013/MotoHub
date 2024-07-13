@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Item Detail{% endblock %}
+
+{% block content %}
+  <h2>Item Details</h2>
+  <p><strong>Name:</strong> {{ item.item_name }}</p>
+  <p><strong>Suited For:</strong> {{ item.item_for_vehicle }}</p>
+  <p><strong>Type:</strong> {{ item.item_type }}</p>
+  <p><strong>Quantity:</strong> {{ item.item_quantity_in_stock }}</p>
+  <p><strong>MRP Price:</strong> {{ item.item_MRP }}</p>
+  <p><strong>Discount:</strong> {{ item.discount_percentage }}</p>
+  <p><strong>Net Price:</strong> {{ item.net_price }}</p>
+  <p><strong>Cost Price:</strong> {{ item.cost_price }}</p>
+
+  <a href="{% url 'item-list' %}" >Back to Items</a>   |
+  <a href="{% url 'item-update' item.pk %}" >Edit</a>  |
+  <a href="{% url 'item-delete' item.pk %}" >Delete</a>
+{% endblock %}
