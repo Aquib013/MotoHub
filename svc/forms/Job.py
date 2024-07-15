@@ -14,7 +14,7 @@ class JobItemForm(forms.ModelForm):
 
     class Meta:
         model = JobItem
-        fields = ["item", "item_quantity", "item_price"]
+        fields = ["item", "item_quantity", "item_unit_price"]
 
     def __init__(self, *args, **kwargs):
         job = kwargs.pop('job', None)
@@ -34,7 +34,7 @@ class JobItemForm(forms.ModelForm):
 
     def clean_item_price(self):
         item = self.cleaned_data.get('item')
-        item_price = self.cleaned_data.get('item_price')
-        if item and item_price < item.cost_price:
+        item_unit_price = self.cleaned_data.get('item_unit_price')
+        if item and item_unit_price < item.cost_price:
             raise forms.ValidationError(f"Item price cannot be less than the cost price ({item.cost_price}).")
-        return item_price
+        return item_unit_price

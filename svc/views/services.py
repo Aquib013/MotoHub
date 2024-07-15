@@ -32,7 +32,7 @@ class ServiceCreateView(FormView):
 
 class ServiceUpdateView(UpdateView):
     model = Service
-    fields = ["name", "service_type", "vehicle", "cost"]
+    fields = ["name", "service_type", "vehicle", "total_run", "unit_service_cost"]
     template_name = 'services/edit_service.html'
 
     def get_success_url(self):
