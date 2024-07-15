@@ -10,7 +10,12 @@ class JobItem(BaseModel):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     item_quantity = models.PositiveIntegerField()
+    item_unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.item_price = self.item_quantity * self.item_unit_price  # NOQA
+        super().save(*args, **kwargs)
 
 
 @receiver(pre_save, sender=JobItem)

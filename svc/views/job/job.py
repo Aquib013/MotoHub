@@ -1,4 +1,7 @@
 from django.db.models import Sum
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from django.views.generic import (
     CreateView,
     ListView,
@@ -8,6 +11,8 @@ from django.views.generic import (
 )
 
 from django.urls import reverse_lazy
+from weasyprint import HTML
+
 from svc.models import Job, Service
 from svc.forms import JobForm
 
@@ -39,7 +44,7 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['services'] = Service.objects.filter(job=self.get_object())
-        context['total_service_cost'] = context['services'].aggregate(total_cost=Sum('cost'))['total_cost'] or 0
+        context['total_service_cost'] = context['services'].aggregate(total_cost=Sum('service_cost'))['total_cost'] or 0
         return context
 
 
@@ -56,3 +61,25 @@ class JobDeleteView(DeleteView):
     model = Job
     template_name = "job/job_delete.html"
     success_url = reverse_lazy("jobs")
+
+
+def generate_invoice(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    services = Service.objects.filter(job=job)
+    total_service_cost = services.aggregate(total_cost=Sum('service_cost'))['total_cost'] or 0
+    total_item_cost = job.jobitem_set.aggregate(total_cost=Sum('item_price'))['total_cost'] or 0
+
+    context = {
+        'job': job,
+        'services': services,
+        'total_service_cost': total_service_cost,
+        'total_item_cost': total_item_cost,
+    }
+
+    html_string = render_to_string('job/job_invoice.html', context)
+    html = HTML(string=html_string)
+    pdf = html.write_pdf()
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{job.job_no}.pdf"'
+    return response

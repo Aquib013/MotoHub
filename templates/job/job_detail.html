@@ -16,7 +16,9 @@
       <th>Description</th>
       <th>Service Type</th>
       <th>Service For Vehicle</th>
-      <th>Cost</th>
+      <th>Service For Vehicle</th>
+      <th>unit Service Cost</th>
+      <th>Service Cost</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -26,7 +28,9 @@
         <td>{{ service.name }}</td>
         <td>{{ service.service_type }}</td>
         <td>{{ service.vehicle }}</td>
-        <td>{{ service.cost }}</td>
+        <td>{{ service.quantity }}</td>
+        <td>{{ service.unit_service_cost }}</td>
+        <td>{{ service.service_cost }}</td>
         <td>
           <a href="{% url 'edit_service' service.pk %}" >Edit Service</a>  |
           <a href="{% url 'delete_service' service.pk %}" >Delete Service</a>
@@ -51,7 +55,8 @@
     <tr>
       <th>Item Name</th>
       <th>Quantity</th>
-      <th>Price</th>
+      <th>Unit Price</th>
+      <th>Total Price</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -60,6 +65,7 @@
       <tr>
         <td>{{ job_item.item }}</td>
         <td>{{ job_item.item_quantity }}</td>
+        <td>{{ job_item.item_unit_price }}</td>
         <td>{{ job_item.item_price }}</td>
         <td>
           <a href="{% url 'edit-job-item' job_item.id %}" >Edit Item</a>  |
@@ -79,4 +85,8 @@
 <a href="{% url 'jobs' %}" >Back to Jobs</a> |
 <a href="{% url 'job_edit' job.pk %}" >Edit Job</a> |
 <a href="{% url 'job_delete' job.pk %}" >Delete Job </a>
+<br>
+<br>
+<a href="{% url 'generate_invoice' job.id %}">Download Invoice</a>
+
 {% endblock %}

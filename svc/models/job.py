@@ -1,10 +1,12 @@
 from datetime import datetime
+from decimal import Decimal
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 from svc.models import BaseModel, Mechanic
-
 
 JOB_STATUS = (
     ("Pending", "Pending"),
@@ -40,10 +42,18 @@ class Job(BaseModel):
             self.job_no = self.unique_job_no()
         if self.status == 'Completed' and self.job_completion_time is None:
             self.job_completion_time = timezone.now()
-        if self.total_item_cost or self.total_service_cost:
-            self.job_amount = self.total_item_cost + self.total_service_cost  # NOQA
-        else:
-            self.job_amount = 0.0
+        item_cost = Decimal(self.total_item_cost) if self.total_item_cost else Decimal(0)             # NOQA
+        service_cost = Decimal(self.total_service_cost) if self.total_service_cost else Decimal(0)    # NOQA
+
+        self.job_amount = item_cost + service_cost
         super(Job, self).save(*args, **kwargs)
 
 
+@receiver(post_save, sender=Job)
+def update_mechanic_data(sender, instance, **kwargs):
+    mechanic = instance.mechanic
+    last_billed_date = instance.created_at
+    last_billed_amount = instance.job_amount
+    mechanic.last_billed_date = last_billed_date
+    mechanic.last_billed_amount = last_billed_amount
+    mechanic.save()
