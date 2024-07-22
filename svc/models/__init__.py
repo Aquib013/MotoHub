@@ -1,6 +1,6 @@
 from svc.models.base import BaseModel
 
-from svc.models.mechanic import Mechanic
+from svc.models.customer import Customer
 from svc.models.vehicle import Vehicle
 from svc.models.items import Item
 from svc.models.job import Job

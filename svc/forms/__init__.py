@@ -1,4 +1,4 @@
-from svc.forms.mechanic import MechanicForm
+from svc.forms.customer import CustomerForm
 from svc.forms.Job import JobForm, JobItemForm
 from svc.forms.service import ServiceForm
 from svc.forms.vendor import VendorForm, VendorPaymentForm

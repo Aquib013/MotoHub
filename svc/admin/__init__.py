@@ -1,14 +1,14 @@
-from svc.admin.mechanic import *
+from svc.admin.customer import *
 from svc.admin.job import *
 from svc.admin.vehicle import *
 from svc.admin.service import *
 from svc.admin.vendors import *
 from svc.admin.items import *
 
-from svc.models import Mechanic, Job, Vehicle, Service, Vendor, Item
+from svc.models import Customer, Job, Vehicle, Service, Vendor, Item
 
 
-admin.site.register(Mechanic, MechanicAdmin)
+admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Job, JobAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(Service, ServiceAdmin)

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from svc.models import BaseModel, Mechanic
+from svc.models import BaseModel, Customer
 
 JOB_STATUS = (
     ("Pending", "Pending"),
@@ -17,7 +17,7 @@ JOB_STATUS = (
 
 class Job(BaseModel):
     job_no = models.CharField(unique=True)
-    mechanic = models.ForeignKey(Mechanic, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     status = models.CharField(choices=JOB_STATUS, null=True, blank=True, default=0)
     license_plate = models.CharField(null=True, blank=True)
     job_completion_time = models.DateTimeField(null=True, blank=True)
@@ -26,7 +26,7 @@ class Job(BaseModel):
     job_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
-        return f"{self.mechanic} - {self.job_no}"
+        return f"{self.customer} - {self.job_no}"
 
     @staticmethod
     def unique_job_no():
@@ -50,10 +50,10 @@ class Job(BaseModel):
 
 
 @receiver(post_save, sender=Job)
-def update_mechanic_data(sender, instance, **kwargs):
-    mechanic = instance.mechanic
+def update_customer_data(sender, instance, **kwargs):
+    customer = instance.customer
     last_billed_date = instance.created_at
     last_billed_amount = instance.job_amount
-    mechanic.last_billed_date = last_billed_date
-    mechanic.last_billed_amount = last_billed_amount
-    mechanic.save()
+    customer.last_billed_date = last_billed_date
+    customer.last_billed_amount = last_billed_amount
+    customer.save()

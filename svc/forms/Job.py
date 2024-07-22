@@ -6,7 +6,7 @@ from svc.models import Job, JobItem
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ["mechanic", "license_plate", "status"]
+        fields = ["customer", "license_plate", "status"]
 
 
 class JobItemForm(forms.ModelForm):
