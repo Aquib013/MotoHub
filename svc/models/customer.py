@@ -2,10 +2,16 @@ from django.db import models
 from .base import BaseModel
 from ..constants.places import PLACE_CHOICES
 
+CUSTOMER_CHOICE = (
+    ("Mechanic", "Mechanic"),
+    ("Non-Mechanic", "Non-Mechanic")
+)
 
-class Mechanic(BaseModel):
-    mechanic_name = models.CharField()
-    mechanic_mob_no = models.CharField(unique=True)
+
+class Customer(BaseModel):
+    customer_name = models.CharField()
+    customer_mob_no = models.CharField(unique=True)
+    customer_type = models.CharField(choices=CUSTOMER_CHOICE)
     place = models.CharField(choices=PLACE_CHOICES)
     dues = models.FloatField(default=0)
     balance = models.FloatField(default=0)
@@ -13,4 +19,4 @@ class Mechanic(BaseModel):
     last_billed_amount = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.mechanic_name
+        return self.customer_name

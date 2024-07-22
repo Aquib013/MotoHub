@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Customer{% endblock %}
+
+{% block content %}
+<h1>Customers List</h1>
+    {% if customers %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Customer Type</th>
+                    <th>Place</th>
+                    <th>Balance</th>
+                    <th>Total Dues</th>
+                    <th>Last Billed Amount</th>
+                    <th>Last Billed Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.customer_name }}</td>
+                        <td>{{ customer.customer_mob_no }}</td>
+                        <td>{{ customer.customer_type }}</td>
+                        <td>{{ customer.place }}</td>
+                        <td>{{ customer.balance }}</td>
+                        <td>{{ customer.dues }}</td>
+                        <td>{{ customer.last_billed_amount }}</td>
+                        <td>{{ customer.last_billed_date.date }}</td>
+                        <td>
+                            <a href="{% url 'edit-customer' customer.id %}">Edit</a> |
+                            <a href="{% url 'delete-customer' customer.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add-customer' %}">Add New Customer</a>
+{% else %}
+<p>No Customers Added</p>
+<a href="{% url 'add-customer' %}">Add New Customer</a>
+{% endif %}
+{% endblock %}

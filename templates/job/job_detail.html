@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Job Details</h1>
 <p><strong>Job Number:</strong> {{ job.job_no }}</p>
-<p><strong>Customer:</strong> {{ job.mechanic }}</p>
+<p><strong>Customer:</strong> {{ job.customer }}</p>
 <p><strong>Status:</strong> {{ job.status }}</p>
 <p><strong>Completion Time:</strong> {{ job.job_completion_time }}</p>
 <p><strong>Job Amount:</strong> {{ job.job_amount }}</p>
@@ -16,7 +16,7 @@
       <th>Description</th>
       <th>Service Type</th>
       <th>Service For Vehicle</th>
-      <th>Service For Vehicle</th>
+      <th>Quantity</th>
       <th>unit Service Cost</th>
       <th>Service Cost</th>
       <th>Actions</th>
