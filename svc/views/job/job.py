@@ -1,7 +1,12 @@
+from decimal import Decimal
+
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.db.models import Sum
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.generic import (
     CreateView,
     ListView,
@@ -51,16 +56,34 @@ class JobDetailView(DetailView):
 class JobUpdateView(UpdateView):
     model = Job
     form_class = JobForm
-    template_name = "job/job_edit.html"
+    template_name = "job/job_form.html"
+    success_url = reverse_lazy("jobs")
 
-    def get_success_url(self):
-        return reverse_lazy('job_detail', kwargs={'pk': self.object.pk})
+    def form_valid(self, form):
+        job = form.save(commit=False)
+        if job.status == 'Completed':
+            job.paid_amount = form.cleaned_data.get('add_payment')
+        else:
+            job.paid_amount = Decimal(0)
+        return super().form_valid(form)
 
 
 class JobDeleteView(DeleteView):
     model = Job
     template_name = "job/job_delete.html"
-    success_url = reverse_lazy("jobs")
+    success_url = reverse_lazy('jobs')  # Replace with your job list URL name
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            messages.success(request, "Job deleted successfully.")
+        except ValidationError as e:
+            messages.error(request, e.message)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
 
 def generate_invoice(request, job_id):

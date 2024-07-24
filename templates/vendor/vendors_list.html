@@ -1,45 +1,56 @@
 {% extends "base.html" %}
-{% block title %}Vendors {% endblock %}
+
+{% block title %}Vendors{% endblock %}
 
 {% block content %}
-<h2>Vendors</h2>
-    {% if vendors%}
-        <table class="table">
-            <thead>
-              <tr>
-                <th>Firm Name</th>
-                <th>Vendor Name</th>
-                <th>Phone</th>
-                <th>Vendor Balance</th>
-                <th>Last Purchase</th>
-                <th>Last Payment Amount</th>
-                <th>Last Payment date</th>
-                <th>Actions</th>
-              </tr>
+<div class="container-fluid">
+    {% if vendors %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Vendor</h1>
+            <a href="{% url 'add_vendor' %}" class="btn btn-primary btn-lg">Add Vendor</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-lg">
+                <thead class="table-dark">
+                    <tr>
+                    <th>Firm Name</th>
+                    <th>Vendor Name</th>
+                    <th>Phone</th>
+                    <th>Vendor Balance</th>
+                    <th>Last Purchase</th>
+                    <th>Last Payment Amount</th>
+                    <th>Last Payment date</th>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
-              {% for vendor in vendors %}
-                <tr>
-                  <td>{{ vendor.firm_name }}</td>
-                  <td>{{ vendor.vendor_name }}</td>
-                  <td>{{ vendor.vendor_contact_no }}</td>
-                  <td>{{ vendor.vendor_balance }}</td>
-                  <td>{{ vendor.last_purchase_date }}</td>
-                  <td>{{ vendor.last_payment_amount }}</td>
-                  <td>{{ vendor.last_payment_date }}</td>
-                  <td>
-                    <a href="{% url 'edit_vendor' vendor.pk %}" >Edit</a>  |
-                    <a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>  |
-                    <a href="{% url 'vendor-payment-history' vendor.pk %}">View Payments</a>  |
-                    <a href="{% url 'delete_vendor' vendor.pk %}" >Delete</a>
-                  </td>
-                </tr>
-              {% endfor %}
+                {% for vendor in vendors %}
+                    <tr>
+                        <td>{{ vendor.firm_name }}</td>
+                        <td>{{ vendor.vendor_name }}</td>
+                        <td>{{ vendor.vendor_contact_no }}</td>
+                        <td>{{ vendor.vendor_balance }}</td>
+                        <td>{{ vendor.last_purchase_date }}</td>
+                        <td>{{ vendor.last_payment_amount }}</td>
+                        <td>{{ vendor.last_payment_date }}</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'edit_vendor' vendor.pk %}" class="btn btn-sm btn-info">Edit</a>
+                                <a href="{% url 'vendor-payment' vendor.pk %}" class="btn btn-sm btn-info">Make payment</a>
+                                <a href="{% url 'vendor-payment-history' vendor.pk %}" class="btn btn-sm btn-info">View Payments</a>
+                                <a href="{% url 'delete_vendor' vendor.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'add_vendor' %}" >Create New Vendor</a>
-    {% else %}
-        <p>No Vendor Added</p>
-        <a href="{% url 'add_vendor' %}" >Create New Vendor</a>
-    {% endif %}
+    </div>
+{% else %}
+    <div class="text-center mt-5">
+        <h3 class="mb-4">No Vendor Added</h3>
+        <a href="{% url 'add_vendor' %}" class="btn btn-lg btn-primary">Add New Vendor</a>
+    </div>
+{% endif %}
+</div>
 {% endblock %}

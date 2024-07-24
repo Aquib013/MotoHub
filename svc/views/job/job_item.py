@@ -32,7 +32,7 @@ class JobItemCreateView(CreateView):
 
 class JobItemUpdateView(UpdateView):
     model = JobItem
-    fields = ['item', 'item_quantity', 'item_price']
+    fields = ["item", "item_quantity", "item_unit_price"]
     template_name = 'job/job_item/edit_item.html'
 
     def get_success_url(self):

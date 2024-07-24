@@ -1,6 +1,7 @@
 crispy-bootstrap5==2024.2
 Django==5.0.7
 django-crispy-forms==2.2
+django-widget-tweaks==1.5.0
 psycopg2-binary==2.9.9
 python-decouple==3.8
 weasyprint==62.3

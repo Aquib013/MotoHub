@@ -58,7 +58,6 @@ class VendorPaymentHistoryView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         vendor = get_object_or_404(Vendor, pk=self.kwargs["pk"])
-        print(vendor)
         context['vendor'] = vendor
         return context
     # def get_context_data(self, **kwargs):

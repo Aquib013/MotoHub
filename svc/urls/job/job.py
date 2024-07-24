@@ -1,5 +1,5 @@
 from django.urls import path
-from svc.views.job.job import JobCreateView, JobListView, JobDetailView, JobUpdateView, JobDeleteView, generate_invoice
+from svc.views.job.job import JobCreateView, JobListView, JobDetailView, JobUpdateView, generate_invoice, JobDeleteView
 from svc.views.job.job_item import JobItemCreateView, JobItemUpdateView, JobItemDeleteView
 from svc.views.services import ServiceCreateView, ServiceUpdateView, ServiceDeleteView
 
