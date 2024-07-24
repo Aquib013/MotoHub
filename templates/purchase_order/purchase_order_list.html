@@ -1,37 +1,47 @@
 {% extends "base.html" %}
+
 {% block title %}Purchase Orders{% endblock %}
 
 {% block content %}
-{% if purchase_orders %}
-  <h2>Purchase Orders</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Order Number</th>
-        <th>Vendor</th>
-        <th>PO Amount</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in purchase_orders %}
-        <tr>
-          <td>{{ order.po_number }}</td>
-          <td>{{ order.vendor.vendor_name }}</td>
-          <td>{{ order.po_amount }}</td>
-          <td>
-            <a href="{% url 'purchase-order-detail' order.pk %}" >View</a>  |
-            <a href="{% url 'purchase-order-update' order.pk %}" >Edit</a>  |
-            <a href="{% url 'purchase-order-delete' order.pk %}" >Delete</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-<a href="{% url 'purchase-order-create' %}" >Create New Purchase Order</a>
-
+<div class="container-fluid">
+    {% if purchase_orders %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Purchase Orders</h2>
+            <a href="{% url 'purchase-order-create' %}" class="btn btn-primary btn-lg">Create Purchase Order</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-lg">
+                <thead class="table-dark">
+                    <tr>
+                    <th>Order Number</th>
+                    <th>Vendor</th>
+                    <th>PO Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in purchase_orders %}
+                    <tr>
+                        <td>{{ order.po_number }}</td>
+                        <td>{{ order.vendor.vendor_name }}</td>
+                        <td>{{ order.po_amount }}</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'purchase-order-detail' order.pk %}" class="btn btn-sm btn-info">View</a>
+                                <a href="{% url 'purchase-order-update' order.pk %}" class="btn btn-sm btn-danger">Update</a>
+                                <a href="{% url 'purchase-order-delete' order.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
-<p> No Purchase Order </p>
-<a href="{% url 'purchase-order-create' %}" >Create New Purchase Order</a>
+    <div class="text-center mt-5">
+        <h3 class="mb-4">No Purchase Orders</h3>
+        <a href="{% url 'purchase-order-create' %}" class="btn btn-lg btn-primary">Create Purchase order</a>
+    </div>
 {% endif %}
+</div>
 {% endblock %}

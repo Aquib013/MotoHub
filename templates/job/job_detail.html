@@ -1,92 +1,132 @@
 {% extends "base.html" %}
-{% block title %} Job Detail {% endblock %}
+{% load custom_tags %}
+{% block title %}Job Detail - MotoHub{% endblock %}
 {% block content %}
-<h1>Job Details</h1>
-<p><strong>Job Number:</strong> {{ job.job_no }}</p>
-<p><strong>Customer:</strong> {{ job.customer }}</p>
-<p><strong>Status:</strong> {{ job.status }}</p>
-<p><strong>Completion Time:</strong> {{ job.job_completion_time }}</p>
-<p><strong>Job Amount:</strong> {{ job.job_amount }}</p>
-<h2>Services</h2>
-{% if services %}
-  <p><strong>Total Service Cost:</strong> Rs.{{ job.total_service_cost }}</p>
-  <table class="table">
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Service Type</th>
-      <th>Service For Vehicle</th>
-      <th>Quantity</th>
-      <th>unit Service Cost</th>
-      <th>Service Cost</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for service in services %}
-      <tr>
-        <td>{{ service.name }}</td>
-        <td>{{ service.service_type }}</td>
-        <td>{{ service.vehicle }}</td>
-        <td>{{ service.quantity }}</td>
-        <td>{{ service.unit_service_cost }}</td>
-        <td>{{ service.service_cost }}</td>
-        <td>
-          <a href="{% url 'edit_service' service.pk %}" >Edit Service</a>  |
-          <a href="{% url 'delete_service' service.pk %}" >Delete Service</a>
-        </td>
-      </tr>
-    {% endfor %}
-  </tbody>
-  </table>
-<a href="{% url 'add_service' job.pk %}" >Add Service</a>
+<div class="container mt-4">
+    <h1 class="mb-4">Job Details</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Job Number:</strong> {{ job.job_no }}</p>
+                    <p><strong>Customer:</strong> {{ job.customer }}</p>
+                    <p><strong>Status:</strong> <span class="badge bg-{{ job.status|lower }}">{{ job.status }}</span></p>
+                    {% if job.status == "Completed" %}
+                        <p><strong>Completion Time:</strong> {{ job.job_completion_time|date:"d M Y, H:i" }}</p>
+                    {% endif %}
+                    <p><strong>Job Amount:</strong> Rs.{{ job.job_amount|floatformat:2 }}</p>
+                </div>
+                <div class="col-md-6">
+                {% with unique_vehicles=services|unique_vehicles %}
+                {% if unique_vehicles|length == 1 %}
+                <p><strong>Make:</strong> {{ unique_vehicles.0.make }}</p>
+                <p><strong>Model:</strong> {{ unique_vehicles.0.name }}</p>
+                {% else %}
+                <p><strong>Vehicle:</strong>Multiple Vehicles</p>
+                {% endif %}
+                {% endwith %}
+                <p><strong>Registration No.:</strong> {{ job.license_plate }}</p>
+                {% for service in services %}
+                <p><strong>Mileage:</strong>{{ service.total_run }} Kms</p>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 
-{% else %}
-  <p>No services Added</p>
-<a href="{% url 'add_service' job.pk %}" >Add Service</a>
+    <h2 class="mb-3">Services</h2>
+    {% if services %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Service Cost: Rs.{{ job.total_service_cost|floatformat:2 }}</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                <th>Service Type</th>
+                                <th>Vehicle</th>
+                                <th>Quantity</th>
+                                <th>Unit Cost</th>
+                                <th>Total Cost</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in services %}
+                                <tr>
+                                    <td>{{ service.name }}</td>
+                                    <td>{{ service.service_type }}</td>
+                                    <td>{{ service.vehicle }}</td>
+                                    <td>{{ service.quantity }}</td>
+                                    <td>Rs.{{ service.unit_service_cost|floatformat:2 }}</td>
+                                    <td>Rs.{{ service.service_cost|floatformat:2 }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'edit_service' service.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{% url 'delete_service' service.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="alert alert-info">No services added</p>
+    {% endif %}
+    <a href="{% url 'add_service' job.pk %}" class="btn btn-primary mb-4">Add Service</a>
 
-{% endif %}
+    <h2 class="mb-3">Items</h2>
+    {% if job.jobitem_set.exists %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Item Cost: Rs.{{ job.total_item_cost|floatformat:2 }}</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job_item in job.jobitem_set.all %}
+                                <tr>
+                                    <td>{{ job_item.item }}</td>
+                                    <td>{{ job_item.item_quantity }}</td>
+                                    <td>Rs.{{ job_item.item_unit_price|floatformat:2 }}</td>
+                                    <td>Rs.{{ job_item.item_price|floatformat:2 }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'edit-job-item' job_item.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{% url 'delete-job-item' job_item.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="alert alert-info">No items added</p>
+    {% endif %}
+    <a href="{% url 'add-job-item' job.pk %}" class="btn btn-primary mb-4">Add Item</a>
 
-<h2>Items</h2>
-{% if job.jobitem_set.exists %}
-  <p><strong>Total Item Cost:</strong> Rs.{{ job.total_item_cost }}</p>
-  <table class="table">
-  <thead>
-    <tr>
-      <th>Item Name</th>
-      <th>Quantity</th>
-      <th>Unit Price</th>
-      <th>Total Price</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for job_item in job.jobitem_set.all %}
-      <tr>
-        <td>{{ job_item.item }}</td>
-        <td>{{ job_item.item_quantity }}</td>
-        <td>{{ job_item.item_unit_price }}</td>
-        <td>{{ job_item.item_price }}</td>
-        <td>
-          <a href="{% url 'edit-job-item' job_item.id %}" >Edit Item</a>  |
-          <a href="{% url 'delete-job-item' job_item.id %}" >Delete Item</a>
-        </td>
-      </tr>
-    {% endfor %}
-  </tbody>
-  </table>
-{% else %}
-  <p>No Items Added</p>
-{% endif %}
-<a href="{% url 'add-job-item' job.pk %}" >Add Item</a>
-<br>
-<br>
-
-<a href="{% url 'jobs' %}" >Back to Jobs</a> |
-<a href="{% url 'job_edit' job.pk %}" >Edit Job</a> |
-<a href="{% url 'job_delete' job.pk %}" >Delete Job </a>
-<br>
-<br>
-<a href="{% url 'generate_invoice' job.id %}">Download Invoice</a>
-
+    <div class="d-flex justify-content-between mb-4">
+        <div>
+            <a href="{% url 'jobs' %}" class="btn btn-secondary">Back to Jobs</a>
+            <a href="{% url 'job_edit' job.pk %}" class="btn btn-warning">Edit Job</a>
+<!--            <a href="" class="btn btn-danger">Delete Job</a>-->
+        </div>
+        <a href="{% url 'generate_invoice' job.id %}" class="btn btn-success">Download Invoice</a>
+    </div>
+</div>
 {% endblock %}

@@ -3,11 +3,16 @@
 {% block title %}Customer{% endblock %}
 
 {% block content %}
-<h1>Customers List</h1>
+<div class="container-fluid">
     {% if customers %}
-        <table class="table">
-            <thead>
-                <tr>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Customers</h1>
+            <a href="{% url 'create_job' %}" class="btn btn-primary btn-lg">Add Customer</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-lg">
+                <thead class="table-dark">
+                    <tr>
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Customer Type</th>
@@ -31,16 +36,22 @@
                         <td>{{ customer.last_billed_amount }}</td>
                         <td>{{ customer.last_billed_date.date }}</td>
                         <td>
-                            <a href="{% url 'edit-customer' customer.id %}">Edit</a> |
-                            <a href="{% url 'delete-customer' customer.id %}">Delete</a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'edit-customer' customer.id %}" class="btn btn-sm btn-info">Edit</a>
+                                <a href="{% url 'customer_jobs' customer.id %}" class="btn btn-sm btn-info">View Jobs</a>
+                                <a href="{% url 'delete-customer' customer.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'add-customer' %}">Add New Customer</a>
+    </div>
 {% else %}
-<p>No Customers Added</p>
-<a href="{% url 'add-customer' %}">Add New Customer</a>
+    <div class="text-center mt-5">
+        <h3 class="mb-4">No Customers Added</h3>
+        <a href="{% url 'add-customer' %}" class="btn btn-lg btn-primary">Add New Customer</a>
+    </div>
 {% endif %}
+</div>
 {% endblock %}

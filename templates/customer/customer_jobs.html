@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+
+{% block content %}
+<h1>Jobs for {{ customer.customer_name }}</h1>
+
+<p>Total Dues: {{ total_dues }}</p>
+<p>Total Balance: {{ total_balance }}</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Job No</th>
+            <th>Job Date</th>
+            <th>Status</th>
+            <th>Job Amount</th>
+            <th>Paid Amount</th>
+            <th>Due/Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.job_no }}</td>
+            <td>{{ job.created_at.date }}</td>
+            <td>{{ job.status }}</td>
+            <td>{{ job.job_amount }}</td>
+            <td>{{ job.paid_amount }}</td>
+            <td>
+                {% if job.paid_amount < job.job_amount %}
+                    Due: {{ job.job_amount|sub:job.paid_amount }}
+                {% elif job.paid_amount > job.job_amount %}
+                    Balance: {{ job.paid_amount|sub:job.job_amount }}
+                {% else %}
+                    Settled
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

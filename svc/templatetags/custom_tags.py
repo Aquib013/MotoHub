@@ -7,3 +7,8 @@ register = template.Library()
 def unique_vehicles(services):
     vehicles = set(service.vehicle for service in services)
     return list(vehicles)
+
+
+@register.filter
+def sub(value, arg):
+    return value - arg

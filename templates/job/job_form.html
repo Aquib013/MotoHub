@@ -1,12 +1,76 @@
 {% extends 'base.html' %}
-{% block title %}Create Job{% endblock %}
+{% load widget_tweaks %}
+
+{% block title %}Update Job - MotoHub{% endblock %}
 
 {% block content %}
-  <h2>Create Job</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
-  <a href="{% url 'jobs' %}" >Cancel</a>
+<div class="container mt-4">
+    <h2 class="mb-4">{% if form.instance.pk %}Update Job{% else %}Create Job{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ field.label }}: {{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {% for field in form %}
+                {% if field.name == 'add_payment' %}
+                    <div id="payment-container" class="col-md-6 mb-3" style="display:none;">
+                        {{ field.label_tag }}
+                        {% render_field field class="form-control" %}
+                        {% if field.errors %}
+                            <small class="form-text text-danger">{{ field.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="col-md-6 mb-3">
+                        {{ field.label_tag }}
+                        {% if field.name == 'status' or field.name == 'customer' %}
+                            {% render_field field class="form-select" %}
+                        {% else %}
+                            {% render_field field class="form-control" %}
+                        {% endif %}
+                        {% if field.errors %}
+                            <small class="form-text text-danger">{{ field.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{% url 'jobs' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var statusField = document.getElementById('id_status');
+    var paymentContainer = document.getElementById('payment-container');
+
+    function togglePaymentField() {
+        if (statusField.value === 'Completed') {
+            paymentContainer.style.display = 'block';
+        } else {
+            paymentContainer.style.display = 'none';
+            document.getElementById('id_add_payment').value = '';
+        }
+    }
+
+    statusField.addEventListener('change', togglePaymentField);
+    togglePaymentField();  // Call once to set initial state
+});
+</script>
 {% endblock %}

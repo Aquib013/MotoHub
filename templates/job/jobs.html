@@ -1,47 +1,63 @@
 {% extends 'base.html' %}
-{% block title %}Jobs{% endblock %}
+{% block title %}Jobs - MotoHub{% endblock %}
 
 {% block content %}
-{% if jobs %}
-  <h2>Jobs</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Job Number</th>
-        <th>Customer</th>
-        <th>Registration Number</th>
-        <th>Created At</th>
-        <th>Status</th>
-        {% if show_completion_time %}
-          <th>Completion Time</th>
-        {% endif %}
-        <th> Job Amount</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for job in jobs %}
-        <tr>
-          <td>{{ job.job_no }}</td>
-          <td>{{ job.customer }}</td>
-          <td>{{ job.license_plate }}</td>
-          <td>{{ job.created_at }}</td>
-          <td>{{ job.status }}</td>
-          {% if show_completion_time %}
-            <td>{{ job.job_completion_time }}</td>
-          {% endif %}
-          <td>{{ job.job_amount }}</td>
-          <td>
-            <a href="{% url 'job_detail' job.pk %}" >View</a> |
-            <a href="{% url 'job_delete' job.pk %}" >Delete</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <a href="{% url 'create_job' %}" >Create New Job</a>
-{% else %}
-<h3>No Jobs Created Yet</h3>
-<a href="{% url 'create_job' %}" >Create New Job</a>
-{% endif %}
+
+<div class="container-fluid">
+    {% if jobs %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Jobs</h1>
+            <a href="{% url 'create_job' %}" class="btn btn-primary btn-md">Create New Job</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-lg">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Job No.</th>
+                        <th>Customer</th>
+                        <th>Reg. No.</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        {% if show_completion_time %}
+                            <th>Completed</th>
+                        {% endif %}
+                        <th>Amount</th>
+                        <th>Paid</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.job_no }}</td>
+                            <td>{{ job.customer}}</td>
+                            <td>{{ job.license_plate }}</td>
+                            <td>{{ job.created_at }}</td>
+                            <td><span class="badge bg-{{ job.status|lower }}">{{ job.status }}</span></td>
+                            {% if show_completion_time %}
+                                <td>{{ job.job_completion_time }}</td>
+                            {% endif %}
+                            <td>{{ job.job_amount|floatformat:2 }}</td>
+                            <td>{{ job.paid_amount|floatformat:2 }}</td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="{% url 'job_detail' job.pk %}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{% url 'job_edit' job.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{% url 'job_edit' job.pk %}" class="btn btn-sm btn-success">Add Payment</a>
+                                    <a href="{% url 'job_delete' job.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="{% url 'generate_invoice' job.id %}" class="btn btn-sm btn-info">Download Invoice</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center mt-5">
+            <h3 class="mb-4">No Jobs Created Yet</h3>
+            <a href="{% url 'create_job' %}" class="btn btn-lg btn-primary">Create New Job</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

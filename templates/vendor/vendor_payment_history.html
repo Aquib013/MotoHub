@@ -19,9 +19,8 @@
 <a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>  |
 <a href="{% url 'vendors' %}" >Back</a>
 
-  {% else %}
+{% else %}
     <p>No Payments made to this vendor yet.</p>
-<a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>
-
-  {% endif %}
+    <a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>
+{% endif %}
 {% endblock %}

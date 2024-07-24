@@ -1,42 +1,53 @@
 {% extends "base.html" %}
+
 {% block title %}Items{% endblock %}
 
 {% block content %}
-{% if items %}
-  <h2>Items</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Item Name</th>
-        <th>Suited For</th>
-        <th>Type</th>
-        <th>Available Quantity</th>
-        <th>MRP</th>
-
-        <th>Cost Price</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in items %}
-        <tr>
-          <td>{{ item.item_name }}</td>
-          <td>{{ item.item_for_vehicle }}</td>
-          <td>{{ item.item_type }}</td>
-          <td>{{ item.item_quantity_in_stock }}</td>
-          <td>{{ item.item_MRP }}</td>
-          <td>{{ item.cost_price }}</td>
-          <td>
-            <a href="{% url 'item-detail' item.pk %}" >View</a>  |
-            <a href="{% url 'item-update' item.pk %}" >Edit</a>  |
-            <a href="{% url 'item-delete' item.pk %}" >Delete</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container-fluid">
+    {% if items %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Items</h1>
+            <a href="{% url 'item-create' %}" class="btn btn-primary btn-lg">Add Item</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-lg">
+                <thead class="table-dark">
+                    <tr>
+                    <th>Item Name</th>
+                    <th>Suited For</th>
+                    <th>Type</th>
+                    <th>Available Quantity</th>
+                    <th>MRP</th>
+                    <th>Cost Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.item_for_vehicle }}</td>
+                        <td>{{ item.item_type }}</td>
+                        <td>{{ item.item_quantity_in_stock }}</td>
+                        <td>{{ item.item_MRP }}</td>
+                        <td>{{ item.cost_price }}</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'item-detail' item.pk %}" class="btn btn-sm btn-info">View</a>
+                                <a href="{% url 'item-update' item.pk %}" class="btn btn-sm btn-info">Edit</a>
+                                <a href="{% url 'item-delete' item.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
-<p> No Items Added</p>
+    <div class="text-center mt-5">
+        <h3 class="mb-4">No Items</h3>
+        <a href="{% url 'add-customer' %}" class="btn btn-lg btn-primary">Add New Item</a>
+    </div>
 {% endif %}
-<a href="{% url 'item-create' %}" >Create New Item</a>
+</div>
 {% endblock %}
