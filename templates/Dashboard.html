@@ -18,10 +18,5 @@
         </button>
     </div>
 </div>
-{% else %}
-<div class="alert alert-warning" role="alert">
-    <p>You are not logged in.</p>
-    <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
-</div>
 {% endif %}
 {% endblock %}
