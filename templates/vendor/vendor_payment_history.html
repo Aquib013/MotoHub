@@ -1,26 +1,46 @@
 {% extends "base.html" %}
-{% block title %}Vendor Payment History {% endblock %}
+{% block title %}Vendor Payment History{% endblock %}
 
 {% block content %}
-  <h2>Payment History for: {{ vendor.firm_name }}</h2>
-  {% if vendor.vendor_payments.exists %}
-  <table>
-    <tr>
-      <th>Payment Date</th>
-      <th>Amount</th>
-    </tr>
-    {% for payment in vendor.vendor_payments.all %}
-    <tr>
-      <td>{{ payment.created_at }}</td>
-      <td>{{ payment.pay_amount }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-<a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>  |
-<a href="{% url 'vendors' %}" >Back</a>
-
-{% else %}
-    <p>No Payments made to this vendor yet.</p>
-    <a href="{% url 'vendor-payment' vendor.pk %}" >Make Payment</a>
-{% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Payment History for: {{ vendor.firm_name }}</h2>
+        </div>
+        <div class="card-body">
+          {% if vendor.vendor_payments.exists %}
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Payment Date</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for payment in vendor.vendor_payments.all %}
+                  <tr>
+                    <td>{{ payment.created_at|date:"F d, Y" }}</td>
+                    <td>Rs.{{ payment.pay_amount|floatformat:2 }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="alert alert-info" role="alert">
+              No payments made to this vendor yet.
+            </div>
+          {% endif %}
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'vendor-payment' vendor.pk %}" class="btn btn-primary">Make Payment</a>
+          <a href="{% url 'vendors' %}" class="btn btn-secondary ml-2">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -18,8 +18,8 @@ class Vendor(BaseModel):
 
     def update_vendor(self):
         # Calculate and update vendor_balance based on related PurchaseOrders
-        total_po_amount = self.purchase_order.aggregate(total=Sum('po_amount'))['total'] or Decimal('0.00')  # NOQA
-        last_purchase = self.purchase_order.aggregate(last_date=Max("created_at"))['last_date']  # NOQA
+        total_po_amount = self.purchase_orders.aggregate(total=Sum('po_amount'))['total'] or Decimal('0.00')  # NOQA
+        last_purchase = self.purchase_orders.aggregate(last_date=Max("created_at"))['last_date']  # NOQA
         self.last_purchase_date = last_purchase
         self.vendor_balance = total_po_amount
 

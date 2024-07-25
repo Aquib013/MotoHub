@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from svc.models import Item
@@ -15,6 +16,23 @@ class ItemCreateView(CreateView):
     form_class = ItemForm
     template_name = 'items/item_form.html'
     success_url = reverse_lazy('item-list')
+
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        item.save()
+        messages.success(self.request, "Item Added successfully.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Collect all form errors and add them as messages
+        for field, errors in form.errors.items():
+            for error in errors:
+                if field == '__all__':
+                    # This is for non-field errors (like the ones raised in clean())
+                    messages.error(self.request, error)
+                else:
+                    messages.error(self.request, f"{form.fields[field].label}: {error}")
+        return super().form_invalid(form)
 
 
 class ItemDetailView(DetailView):

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
@@ -14,7 +15,15 @@ class PurchaseOrderItemCreateView(CreateView):
         purchase_order_id = self.kwargs.get('pk')
         purchase_order = PurchaseOrder.objects.get(pk=purchase_order_id)
         form.instance.purchase_order = purchase_order
+        purchase_order.save()
+        messages.success(self.request, "Item successfully Added in PO.")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, error)
+        return super().form_invalid(form)
 
     def get_success_url(self):
         purchase_order_id = self.kwargs.get('pk')
@@ -32,7 +41,21 @@ class PurchaseOrderItemCreateView(CreateView):
 class PurchaseOrderItemUpdateView(UpdateView):
     model = PurchaseOrderItem
     form_class = PurchaseOrderItemForm
-    template_name = 'purchase_order/purchase_order_item/edit_item.html'
+    template_name = 'purchase_order/purchase_order_item/add_item.html'
+
+    def form_valid(self, form):
+        purchase_order_id = self.kwargs.get('pk')
+        purchase_order = PurchaseOrder.objects.get(pk=purchase_order_id)
+        form.instance.purchase_order = purchase_order
+        purchase_order.save()
+        messages.success(self.request, "Item successfully Added in PO.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, error)
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse_lazy('purchase-order-detail', kwargs={'pk': self.object.purchase_order.pk})
@@ -41,4 +64,3 @@ class PurchaseOrderItemUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['purchase_order'] = self.object.purchase_order
         return context
-

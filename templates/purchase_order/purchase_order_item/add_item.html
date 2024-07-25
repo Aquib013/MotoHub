@@ -1,12 +1,41 @@
 {% extends "base.html" %}
-{% block title %}Add Item {% endblock %}
+{% load widget_tweaks %}
+
+{% block title %}{% if form.instance.pk %}Update PO Items{% else %}Add PO Items{% endif %}{% endblock %}
 
 {% block content %}
-  <h2>Add Item to Purchase Order #{{ purchase_order.po_number }}</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" >Add Item</button>
-  </form>
-  <a href="{% url 'purchase-order-detail' purchase_order.pk %}" >Cancel</a>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">{% if form.instance.pk %}Update Item to Purchase Order {{ purchase_order.po_number }}
+            {% else %}Add Item to Purchase Order{{ purchase_order.po_number }}{% endif %}</h2>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group row mb-3">
+                <label for="{{ field.id_for_label }}" class="col-sm-3 col-form-label">{{ field.label }}</label>
+                <div class="col-sm-9">
+                  {{ field|add_class:"form-control" }}
+                  {% if field.errors %}
+                    <small class="text-danger">{{ field.errors|striptags }}</small>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+            <div class="form-group row">
+              <div class="col-sm-9 offset-sm-3">
+                <button type="submit" class="btn btn-primary">Add Item</button>
+                <a href="{% url 'purchase-order-detail' purchase_order.pk %}" class="btn btn-secondary ml-2">Cancel</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

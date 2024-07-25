@@ -32,15 +32,6 @@ class PurchaseOrderItem(BaseModel):
         # Reload the item to ensure F expression is applied correctly
         self.item.refresh_from_db()  # NOQA
 
-        # Update the related Item instance
-        # item = self.item
-        # item.item_quantity_in_stock = F('item_quantity_in_stock') + self.quantity
-        # item.item_MRP = self.item_MRP
-        # item.discount_percentage = self.discount_percentage
-        # item.net_price = self.net_price
-        # item.cost_price = self.unit_price
-        # item.save()  # NOQA
-
 
 @receiver(pre_save, sender=PurchaseOrderItem)
 def update_item_quantity(sender, instance, **kwargs):

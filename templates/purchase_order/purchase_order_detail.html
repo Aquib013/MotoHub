@@ -1,51 +1,65 @@
 {% extends "base.html" %}
-{% block title %}Detail PO {% endblock %}
+{% block title %}Detail PO{% endblock %}
 
 {% block content %}
-  <h2>Purchase Order Details</h2>
-  <p><strong>Order Number:</strong> {{ object.po_number }}</p>
-  <p><strong>Vendor:</strong> {{ object.vendor.vendor_name }}</p>
-  <p><strong>PO Amount:</strong> {{ object.po_amount }}</p>
-  {% if object.purchase_order_item.exists %}
-    <h3> Items </h3>
-    <table class="table">
-    <thead>
-      <tr>
-        <th>Item Name</th>
-        <th>Item MRP</th>
-        <th>Quantity</th>
-        <th>Discount Percentage</th>
-        <th>Net Price</th>
-        <th>Unit Price</th>
-        <th>Total Amount</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in object.purchase_order_item.all %}
-        <tr>
-          <td>{{ item.item.item_name }}</td>
-          <td>{{ item.item_MRP }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.discount_percentage }}</td>
-          <td>{{ item.net_price }}</td>
-          <td>{{ item.unit_price }}</td>
-          <td>{{ item.total_amount }}</td>
-          <td>
-            <a href="{% url 'edit-item' item.pk %}" >Edit Item</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  {% else %}
-    <p>No Item in Purchase Order, Please Add Items</p>
-  {% endif %}
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Purchase Order Details</h2>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-md-4"><strong>Order Number:</strong> {{ object.po_number }}</div>
+        <div class="col-md-4"><strong>Vendor:</strong> {{ object.vendor.vendor_name }}</div>
+        <div class="col-md-4"><strong>PO Amount:</strong> Rs.{{ object.po_amount|floatformat:2 }}</div>
+      </div>
 
-  <!-- Add additional details as needed -->
-  <a href="{% url 'add-item' object.pk %}" >Add Item</a>  |
-
-  <a href="{% url 'purchase-orders' %}" >Back to Purchase Orders</a>  |
-  <a href="{% url 'purchase-order-update' object.pk %}" >Edit</a>  |
-  <a href="{% url 'purchase-order-delete' object.pk %}" >Delete</a>
+      {% if object.purchase_order_item.exists %}
+        <h3 class="mb-3">Items</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th>Item Name</th>
+                <th>Item MRP</th>
+                <th>Quantity</th>
+                <th>Discount %</th>
+                <th>Net Price</th>
+                <th>Unit Price</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in object.purchase_order_item.all %}
+                <tr>
+                  <td>{{ item.item.item_name }}</td>
+                  <td>Rs.{{ item.item_MRP|floatformat:2 }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.discount_percentage }}</td>
+                  <td>{{ item.net_price|floatformat:2 }}</td>
+                  <td>{{ item.unit_price|floatformat:2 }}</td>
+                  <td>{{ item.total_amount|floatformat:2 }}</td>
+                  <td>
+                    <a href="{% url 'edit-item' item.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="alert alert-info" role="alert">
+          No items in Purchase Order. Please add items.
+        </div>
+      {% endif %}
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'add-item' object.pk %}" class="btn btn-success">Add Item</a>
+      <a href="{% url 'purchase-orders' %}" class="btn btn-secondary">Back to Purchase Orders</a>
+      <a href="{% url 'purchase-order-update' object.pk %}" class="btn btn-primary">Edit</a>
+      <a href="{% url 'purchase-order-delete' object.pk %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

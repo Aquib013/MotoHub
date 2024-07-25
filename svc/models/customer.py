@@ -18,8 +18,6 @@ class Customer(BaseModel):
     balance = models.FloatField(default=0)
     last_billed_date = models.DateTimeField(null=True, blank=True)
     last_billed_amount = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2)
-    previous_billed_date = models.DateTimeField(null=True, blank=True)
-    previous_billed_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.customer_name

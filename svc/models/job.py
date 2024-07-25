@@ -63,19 +63,26 @@ class Job(BaseModel):
 
 @receiver(post_save, sender=Job)
 def update_customer_on_job_creation(sender, instance, created, **kwargs):
-    customer = instance.customer
-    if customer and instance.status == 'Completed':
-        customer.last_billed_date = instance.created_at
+    if instance.status == 'Completed':
+        customer = instance.customer
         customer.last_billed_amount = instance.job_amount
-        customer.previous_billed_date = customer.last_billed_date
-        customer.previous_billed_amount = customer.last_billed_amount
+        customer.last_billed_date = instance.created_at
         customer.save()
 
 
 @receiver(post_delete, sender=Job)
 def update_customer_on_job_deletion(sender, instance, **kwargs):
     customer = instance.customer
-    if customer.last_billed_date == instance.created_at and customer.last_billed_amount == instance.job_amount:
-        customer.last_billed_date = customer.previous_billed_date
-        customer.last_billed_amount = customer.previous_billed_amount
-        customer.save()
+    previous_job = Job.objects.filter(
+            customer=customer,
+            status="Completed"
+        ).exclude(id=instance.id).order_by('-job_completion_time', '-created_at').first()
+
+    if previous_job:
+        customer.last_billed_amount = previous_job.job_amount
+        customer.last_billed_date = previous_job.created_at
+    else:
+        customer.last_billed_amount = None
+        customer.last_billed_date = None
+
+    customer.save()

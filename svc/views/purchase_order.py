@@ -1,5 +1,4 @@
-from django.db import transaction
-from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from svc.models import PurchaseOrder
@@ -17,6 +16,12 @@ class PurchaseOrderCreateView(CreateView):
     form_class = PurchaseOrderForm
     template_name = 'purchase_order/purchase_order_form.html'
     success_url = reverse_lazy('purchase-orders')
+
+    def form_valid(self, form):
+        purchase_order = form.save(commit=False)
+        purchase_order.save()
+        messages.success(self.request, "Purchase Order created successfully.")
+        return super().form_valid(form)
 
 
 class PurchaseOrderDetailView(DetailView):
