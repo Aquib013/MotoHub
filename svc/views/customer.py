@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib import messages
 from django.db.models import Sum, Case, When, F, DecimalField
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
@@ -23,6 +24,12 @@ class CustomerCreateView(CreateView):
     form_class = CustomerForm
     template_name = "customer/customer_form.html"
     success_url = reverse_lazy("customers")
+
+    def form_valid(self, form):
+        customer = form.save(commit=False)
+        customer.save()
+        messages.success(self.request, "Customer Added successfully.")
+        return super().form_valid(form)
 
 
 class CustomerUpdateView(UpdateView):

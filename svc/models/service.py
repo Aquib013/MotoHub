@@ -17,7 +17,7 @@ class Service(BaseModel):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True)
     total_run = models.PositiveIntegerField(null=True, blank=True)
     service_type = models.CharField(choices=SERVICE_TYPE)
-    quantity = models.PositiveIntegerField(null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
     unit_service_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     service_cost = models.DecimalField(max_digits=10, decimal_places=2)
 

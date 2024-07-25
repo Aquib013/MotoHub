@@ -2,17 +2,60 @@
 {% block title %}Item Detail{% endblock %}
 
 {% block content %}
-  <h2>Item Details</h2>
-  <p><strong>Name:</strong> {{ item.item_name }}</p>
-  <p><strong>Suited For:</strong> {{ item.item_for_vehicle }}</p>
-  <p><strong>Type:</strong> {{ item.item_type }}</p>
-  <p><strong>Quantity:</strong> {{ item.item_quantity_in_stock }}</p>
-  <p><strong>MRP Price:</strong> {{ item.item_MRP }}</p>
-  <p><strong>Discount:</strong> {{ item.discount_percentage }}</p>
-  <p><strong>Net Price:</strong> {{ item.net_price }}</p>
-  <p><strong>Cost Price:</strong> {{ item.cost_price }}</p>
-
-  <a href="{% url 'item-list' %}" >Back to Items</a>   |
-  <a href="{% url 'item-update' item.pk %}" >Edit</a>  |
-  <a href="{% url 'item-delete' item.pk %}" >Delete</a>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Item Details</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <th scope="row">Name</th>
+                <td>{{ item.item_name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Suited For</th>
+                <td>{{ item.item_for_vehicle }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Type</th>
+                <td>{{ item.item_type }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Quantity</th>
+                <td>{{ item.item_quantity_in_stock }}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRP Price</th>
+                <td>{{ item.item_MRP }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Discount</th>
+                <td>{{ item.discount_percentage }}%</td>
+              </tr>
+              <tr>
+                <th scope="row">Net Price</th>
+                <td>{{ item.net_price }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Cost Price</th>
+                <td>{{ item.cost_price }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex gap-2 justify-content-center">
+            <a href="{% url 'item-list' %}" class="btn btn-secondary">Back to Items</a>
+            <a href="{% url 'item-update' item.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'item-delete' item.pk %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

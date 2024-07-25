@@ -1,11 +1,40 @@
 {% extends "base.html" %}
-{% block title %} Make Vendor Payment {% endblock %}
+{% load widget_tweaks %}
+
+{% block title %}Make Vendor Payment{% endblock %}
+
 {% block content %}
-<h1>Make Payment to {{object.vendor.firm_name}}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-<a href="{% url 'vendors' %}" >Cancel</a>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Make Payment to {{vendor.firm_name}}</h2>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group row mb-3">
+                <label for="{{ field.id_for_label }}" class="col-sm-3 col-form-label">{{ field.label }}</label>
+                <div class="col-sm-9">
+                  {{ field|add_class:"form-control" }}
+                  {% if field.errors %}
+                    <small class="text-danger">{{ field.errors|striptags }}</small>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+            <div class="form-group row">
+              <div class="col-sm-9 offset-sm-3">
+                <button type="submit" class="btn btn-primary">Submit Payment</button>
+                <a href="{% url 'vendors' %}" class="btn btn-secondary ml-2">Cancel</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

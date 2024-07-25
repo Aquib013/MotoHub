@@ -7,7 +7,7 @@ from svc.models import BaseModel, Vendor
 
 class PurchaseOrder(BaseModel):
     po_number = models.CharField(unique=True, editable=False)
-    vendor = models.ForeignKey(Vendor, related_name="purchase_order", on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, related_name="purchase_orders", on_delete=models.CASCADE)
     po_amount = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):

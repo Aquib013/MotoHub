@@ -8,21 +8,7 @@
     <h2 class="mb-4">{% if form.instance.pk %}Update Job{% else %}Create Job{% endif %}</h2>
     <form method="post">
         {% csrf_token %}
-
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <p>{{ field.label }}: {{ error }}</p>
-                    {% endfor %}
-                {% endfor %}
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <div class="row">
+            <div class="row">
             {% for field in form %}
                 {% if field.name == 'add_payment' %}
                     <div id="payment-container" class="col-md-6 mb-3" style="display:none;">

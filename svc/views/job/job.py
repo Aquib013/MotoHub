@@ -3,10 +3,9 @@ from decimal import Decimal
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.views.generic import (
     CreateView,
     ListView,
@@ -65,7 +64,16 @@ class JobUpdateView(UpdateView):
             job.paid_amount = form.cleaned_data.get('add_payment')
         else:
             job.paid_amount = Decimal(0)
+        job.save()
+        messages.success(self.request, "Job updated successfully.")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Collect all form errors and add them as messages
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{form.fields[field].label}: {error}")
+        return super().form_invalid(form)
 
 
 class JobDeleteView(DeleteView):
