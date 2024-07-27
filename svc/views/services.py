@@ -33,7 +33,7 @@ class ServiceCreateView(FormView):
 class ServiceUpdateView(UpdateView):
     model = Service
     fields = ["name", "service_type", "vehicle", "total_run", "unit_service_cost"]
-    template_name = 'services/edit_service.html'
+    template_name = 'services/service_form.html'
 
     def get_success_url(self):
         return reverse_lazy('job_detail', kwargs={'pk': self.object.job.pk})

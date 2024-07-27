@@ -15,5 +15,6 @@ class ServiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if job:
             self.fields['job_hidden'].initial = job.pk   # NOQA
-            self.fields['job'] = forms.CharField(initial=job, disabled=True, required=False)
+            self.fields['job'] = forms.CharField(initial=job, disabled=False, required=False,
+                                                 widget=forms.TextInput(attrs={'readonly': 'readonly'}))
             self.fields['job'].label = 'Job'
