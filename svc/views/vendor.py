@@ -48,7 +48,6 @@ class VendorPaymentCreateView(CreateView):
 
     def form_valid(self, form):
         vendor = get_object_or_404(Vendor, pk=self.kwargs['pk'])
-        print(vendor)
         form.instance.vendor = vendor
         vendor.vendor_balance -= form.instance.pay_amount
         vendor.last_payment_date = timezone.now()

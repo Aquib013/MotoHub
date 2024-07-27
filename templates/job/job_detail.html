@@ -62,7 +62,7 @@
                                     <td>Rs.{{ service.unit_service_cost|floatformat:2 }}</td>
                                     <td>Rs.{{ service.service_cost|floatformat:2 }}</td>
                                     <td>
-                                        <div class="btn-group" role="group">
+                                        <div class="btn-group gap-2" role="group">
                                             <a href="{% url 'edit_service' service.pk %}" class="btn btn-sm btn-warning">Edit</a>
                                             <a href="{% url 'delete_service' service.pk %}" class="btn btn-sm btn-danger">Delete</a>
                                         </div>

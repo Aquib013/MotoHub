@@ -22,11 +22,9 @@
             <td>{{ po.created_at.date }}</td>
             <td>Rs.{{ po.po_amount|floatformat:2 }}</td>
             <td>
-              {% for order in purchase_orders %}
-                <div class="d-flex flex-wrap gap-2">
+              <div class="d-flex flex-wrap gap-2">
                     <a href="{% url 'vendor-po-detail' vendor.id po.id %}" class="btn btn-sm btn-info">View</a>
-                </div>
-              {% endfor %}
+              </div>
             </td>
           </tr>
         {% endfor %}
