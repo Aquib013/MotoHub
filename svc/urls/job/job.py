@@ -1,6 +1,6 @@
 from django.urls import path
 from svc.views.job.job import JobCreateView, JobListView, JobDetailView, JobUpdateView, generate_invoice, JobDeleteView
-from svc.views.job.job_item import JobItemCreateView, JobItemUpdateView, JobItemDeleteView
+from svc.views.job.job_item import JobItemAddView, JobItemEditView, JobItemDeleteView
 from svc.views.services import ServiceCreateView, ServiceUpdateView, ServiceDeleteView
 
 job_url_patterns = [
@@ -10,8 +10,8 @@ job_url_patterns = [
     path("jobs/<int:pk>/", JobDetailView.as_view(), name="job_detail"),
     path('service/<int:pk>/edit/', ServiceUpdateView.as_view(), name='edit_service'),
     path('service/<int:pk>/delete/', ServiceDeleteView.as_view(), name='delete_service'),
-    path('job/<int:pk>/item-add/', JobItemCreateView.as_view(), name='add-job-item'),
-    path('job/item/<int:pk>/edit/', JobItemUpdateView.as_view(), name='edit-job-item'),
+    path('job/<int:pk>/item-add/', JobItemAddView.as_view(), name='add-job-item'),
+    path('job/item/<int:pk>/edit/', JobItemEditView.as_view(), name='edit-job-item'),
     path('job/item/<int:pk>/delete/', JobItemDeleteView.as_view(), name='delete-job-item'),
     path("jobs/<int:pk>/edit/", JobUpdateView.as_view(), name="job_edit"),
     path("jobs/<int:pk>/delete/", JobDeleteView.as_view(), name="job_delete"),

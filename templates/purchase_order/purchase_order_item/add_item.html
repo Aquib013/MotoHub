@@ -28,7 +28,8 @@
             {% endfor %}
             <div class="form-group row">
               <div class="col-sm-9 offset-sm-3">
-                <button type="submit" class="btn btn-primary">Add Item</button>
+                <button type="submit" class="btn btn-primary">
+                  {% if form.instance.pk %}Update{% else %}Add{% endif %}</button>
                 <a href="{% url 'purchase-order-detail' purchase_order.pk %}" class="btn btn-secondary ml-2">Cancel</a>
               </div>
             </div>
