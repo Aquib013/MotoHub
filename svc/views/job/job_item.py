@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, DeleteView
@@ -6,7 +7,7 @@ from svc.forms import JobItemForm
 from svc.models import JobItem, Job
 
 
-class JobItemCreateView(CreateView):
+class JobItemAddView(CreateView):
     model = JobItem
     form_class = JobItemForm
     template_name = 'job/job_item/add_item.html'
@@ -17,7 +18,19 @@ class JobItemCreateView(CreateView):
         job_item = form.save(commit=False)
         job_item.job = job
         job_item.save()
+        messages.success(self.request, f"Item '{job_item.item}' successfully added to Job #{job.job_no}")
+
         return redirect('job_detail', pk=job_id)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            if field == '__all__':
+                for error in errors:
+                    messages.error(self.request, f"Error: {error}")
+            else:
+                for error in errors:
+                    messages.error(self.request, f"{field.capitalize()}: {error}")
+        return super().form_invalid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -30,13 +43,26 @@ class JobItemCreateView(CreateView):
         return context
 
 
-class JobItemUpdateView(UpdateView):
+class JobItemEditView(UpdateView):
     model = JobItem
-    fields = ["item", "item_quantity", "item_unit_price"]
-    template_name = 'job/job_item/edit_item.html'
+    form_class = JobItemForm
+    template_name = 'job/job_item/add_item.html'
+    context_object_name = 'job_item'
 
-    def get_success_url(self):
-        return reverse_lazy('job_detail', kwargs={'pk': self.object.job.pk})
+    def form_valid(self, form):
+        job_item = form.save()
+        messages.success(self.request, f"Item '{job_item.item}' successfully updated for Job #{job_item.job.job_no}")
+        return redirect('job_detail', pk=job_item.job.pk)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            if field == '__all__':
+                for error in errors:
+                    messages.error(self.request, f"Error: {error}")
+            else:
+                for error in errors:
+                    messages.error(self.request, f"{field.capitalize()}: {error}")
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

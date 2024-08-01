@@ -103,7 +103,7 @@
                                     <td>Rs.{{ job_item.item_unit_price|floatformat:2 }}</td>
                                     <td>Rs.{{ job_item.item_price|floatformat:2 }}</td>
                                     <td>
-                                        <div class="btn-group" role="group">
+                                        <div class="btn-group gap-2" role="group">
                                             <a href="{% url 'edit-job-item' job_item.id %}" class="btn btn-sm btn-warning">Edit</a>
                                             <a href="{% url 'delete-job-item' job_item.id %}" class="btn btn-sm btn-danger">Delete</a>
                                         </div>

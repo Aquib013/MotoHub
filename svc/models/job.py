@@ -56,7 +56,7 @@ class Job(BaseModel):
         super(Job, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        if self.paid_amount != self.job_amount:
+        if self.status == "Completed" and self.paid_amount != self.job_amount:
             raise ValidationError("The job cannot be deleted as it has associated dues or balance !")
         super().delete(*args, **kwargs)
 

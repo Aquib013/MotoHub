@@ -24,14 +24,13 @@ class ItemCreateView(CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # Collect all form errors and add them as messages
         for field, errors in form.errors.items():
-            for error in errors:
-                if field == '__all__':
-                    # This is for non-field errors (like the ones raised in clean())
-                    messages.error(self.request, error)
-                else:
-                    messages.error(self.request, f"{form.fields[field].label}: {error}")
+            if field == '__all__':
+                for error in errors:
+                    messages.error(self.request, f"Error: {error}")
+            else:
+                for error in errors:
+                    messages.error(self.request, f"{field.capitalize()}: {error}")
         return super().form_invalid(form)
 
 

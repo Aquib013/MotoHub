@@ -36,7 +36,7 @@ class JobForm(forms.ModelForm):
 
 
 class JobItemForm(forms.ModelForm):
-    job_hidden = forms.CharField(widget=forms.HiddenInput(), required=True)
+    job_hidden = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = JobItem
