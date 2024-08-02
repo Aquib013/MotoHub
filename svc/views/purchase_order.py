@@ -9,6 +9,8 @@ class PurchaseOrderListView(ListView):
     model = PurchaseOrder
     template_name = 'purchase_order/purchase_order_list.html'
     context_object_name = "purchase_orders"
+    ordering = ['-created_at']
+
 
 
 class PurchaseOrderCreateView(CreateView):

@@ -59,6 +59,7 @@ class JobListView(ListView):
     model = Job
     template_name = "job/jobs.html"
     context_object_name = "jobs"
+    ordering = ['-created_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

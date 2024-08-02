@@ -19,6 +19,7 @@ class VendorListView(ListView):
     model = Vendor
     template_name = "vendor/vendors_list.html"
     context_object_name = "vendors"
+    ordering = ['-created_at']
 
 
 class VendorUpdateView(UpdateView):

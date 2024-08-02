@@ -13,6 +13,7 @@ class CustomerListView(ListView):
     model = Customer
     template_name = "customer/customers_list.html"
     context_object_name = "customers"
+    ordering = ['-created_at']
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
