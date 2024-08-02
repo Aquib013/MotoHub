@@ -1,9 +1,12 @@
+import json
+
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import FormView, UpdateView, DeleteView
 
 from svc.forms import ServiceForm
 from svc.models import Service, Job
+from svc.models.service import MACHINING_CHOICES, WORKSHOP_CHOICES
 
 
 class ServiceCreateView(FormView):
@@ -27,12 +30,14 @@ class ServiceCreateView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['job'] = get_object_or_404(Job, pk=self.kwargs['pk'])
+        context['machining_choices'] = json.dumps(MACHINING_CHOICES)
+        context['workshop_choices'] = json.dumps(WORKSHOP_CHOICES)
         return context
 
 
 class ServiceUpdateView(UpdateView):
     model = Service
-    fields = ["name", "service_type", "vehicle", "total_run", "unit_service_cost"]
+    fields = ["description", "service_type", "vehicle", "unit_service_cost"]
     template_name = 'services/service_form.html'
 
     def get_success_url(self):

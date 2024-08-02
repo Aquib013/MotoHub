@@ -30,6 +30,7 @@
 <style>
     body{
         font-family: var(--font-styrene-b), sans-serif;
+        background-color: #a39d8b;
     }
     .sidebar {
         width: 300px; /* Fixed width for sidebar */
@@ -38,6 +39,7 @@
         /* Optional: additional styling */
         padding: 20px;
         box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        font-size: 15px;
     }
     .alert-custom {
         position: fixed;
@@ -50,6 +52,7 @@
         color: white;
         font-weight: normal;
         text-align: center;
+        font-size: 17px;
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
     }
@@ -128,7 +131,7 @@ function getCookie(name) {
 }
 </script>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row flex-nowrap">
         <!-- Sidebar -->
         <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-secondary sidebar">
             <div class="position-sticky">

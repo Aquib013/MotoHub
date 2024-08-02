@@ -44,4 +44,30 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var serviceTypeSelect = document.getElementById('id_service_type');
+    var descriptionSelect = document.getElementById('id_description');
+
+    var machiningChoices = JSON.parse('{{ machining_choices|safe }}');
+    var workshopChoices = JSON.parse('{{ workshop_choices|safe }}');
+
+    function updateDescriptionChoices() {
+        var selectedType = serviceTypeSelect.value;
+        descriptionSelect.innerHTML = '<option value="">---------</option>';  // Add a default empty option
+
+        if (selectedType) {
+            var choices = selectedType === 'Machining' ? machiningChoices : workshopChoices;
+            choices.forEach(function(choice) {
+                var option = new Option(choice[1], choice[0]);
+                descriptionSelect.add(option);
+            });
+        }
+    }
+
+    serviceTypeSelect.addEventListener('change', updateDescriptionChoices);
+    updateDescriptionChoices();  // Initial call to set correct choices
+});
+</script>
 {% endblock %}

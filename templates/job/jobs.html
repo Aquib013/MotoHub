@@ -30,7 +30,7 @@
                     {% for job in jobs %}
                         <tr>
                             <td>{{ job.job_no }}</td>
-                            <td>{{ job.customer}}</td>
+                            <td>{{ job.customer.customer_name}}</td>
                             <td>{{ job.license_plate }}</td>
                             <td>{{ job.created_at }}</td>
                             <td><span class="badge bg-{{ job.status|lower }}">{{ job.status }}</span></td>

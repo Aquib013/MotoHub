@@ -59,9 +59,9 @@ class VendorPaymentCreateView(CreateView):
 
 
 class VendorPaymentHistoryView(DetailView):
-    model = VendorPayment
+    model = Vendor
     template_name = 'vendor/vendor_payment_history.html'
-    context_object_name = 'vendors'
+    context_object_name = 'vendor'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

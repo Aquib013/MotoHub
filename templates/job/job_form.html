@@ -55,6 +55,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    var customerTypeSelect = document.getElementById('id_customer_type');
+    var customerSelect = document.getElementById('id_customer');
+
+    function updateCustomerOptions() {
+        var customerType = customerTypeSelect.value;
+
+        if (customerType) {
+            fetch(`{% url 'get-customers' %}?type=${customerType}`)
+                .then(response => response.json())
+                .then(data => {
+                    customerSelect.innerHTML = '<option value="">Select a customer</option>';
+                    data.forEach(customer => {
+                        var option = new Option(customer.name, customer.id);
+                        customerSelect.add(option);
+                    });
+                    customerSelect.disabled = false;
+                });
+        } else {
+            customerSelect.innerHTML = '<option value="">Select a customer</option>';
+            customerSelect.disabled = true;
+        }
+    }
+
+    customerTypeSelect.addEventListener('change', updateCustomerOptions);
+
+    // Initial call to set up the form correctly
+    updateCustomerOptions();
+
     statusField.addEventListener('change', togglePaymentField);
     togglePaymentField();  // Call once to set initial state
 });

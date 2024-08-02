@@ -21,6 +21,7 @@ class Job(BaseModel):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     status = models.CharField(choices=JOB_STATUS, null=True, blank=True, default="Pending")
     license_plate = models.CharField(null=True, blank=True)
+    total_run = models.PositiveIntegerField(null=True, blank=True)
     job_completion_time = models.DateTimeField(null=True, blank=True)
     total_service_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_item_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)

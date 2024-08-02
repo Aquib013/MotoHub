@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>Job Number:</strong> {{ job.job_no }}</p>
-                    <p><strong>Customer:</strong> {{ job.customer }}</p>
+                    <p><strong>Customer:</strong> {{ job.customer.customer_name }}</p>
                     <p><strong>Status:</strong> <span class="badge bg-{{ job.status|lower }}">{{ job.status }}</span></p>
                     {% if job.status == "Completed" %}
                         <p><strong>Completion Time:</strong> {{ job.job_completion_time|date:"d M Y, H:i" }}</p>
@@ -26,9 +26,7 @@
                 {% endif %}
                 {% endwith %}
                 <p><strong>Registration No.:</strong> {{ job.license_plate }}</p>
-                {% for service in services %}
-                <p><strong>Mileage:</strong>{{ service.total_run }} Kms</p>
-                {% endfor %}
+                <p><strong>Mileage:</strong>{{ job.total_run }} Kms</p>
                 </div>
             </div>
         </div>
@@ -55,7 +53,7 @@
                         <tbody>
                             {% for service in services %}
                                 <tr>
-                                    <td>{{ service.name }}</td>
+                                    <td>{{ service.description }}</td>
                                     <td>{{ service.service_type }}</td>
                                     <td>{{ service.vehicle }}</td>
                                     <td>{{ service.quantity }}</td>

@@ -53,7 +53,7 @@ class CustomerJobsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         customer = self.object
-        jobs = customer.job_set.all()  # Use the reverse relation
+        jobs = customer.job_set.filter(status='Completed')  # Use the reverse relation
 
         # Calculate dues and balance
         job_calculations = jobs.aggregate(
