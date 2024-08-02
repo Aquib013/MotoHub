@@ -92,7 +92,7 @@
         <div class="details">
             <div class="left">
                 <p><strong>Job No.:</strong> {{ job.job_no }}</p>
-                <p><strong>Customer:</strong> {{ job.mechanic }}</p>
+                <p><strong>Customer:</strong> {{ job.customer.customer_name }}</p>
                 <p><strong>Job Date:</strong> {{ job.created_at.date }}</p>
                 <!-- Add more job details as needed -->
             </div>
@@ -130,7 +130,7 @@
               <tbody>
                 {% for service in services %}
                   <tr>
-                    <td>{{ service.name }}</td>
+                    <td>{{ service.description }}</td>
                     <td>{{ service.service_type }}</td>
                     {% with unique_vehicles=services|unique_vehicles %}
                     {% if unique_vehicles|length > 1 %}

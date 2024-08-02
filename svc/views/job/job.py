@@ -3,9 +3,10 @@ from decimal import Decimal
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
+from django.views import View
 from django.views.generic import (
     CreateView,
     ListView,
@@ -17,8 +18,9 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from weasyprint import HTML
 
-from svc.models import Job, Service
+from svc.models import Job, Service, Customer
 from svc.forms import JobForm
+from svc.models.customer import CUSTOMER_CHOICE
 
 
 class JobCreateView(CreateView):
@@ -26,6 +28,18 @@ class JobCreateView(CreateView):
     form_class = JobForm
     template_name = "job/job_form.html"
     success_url = reverse_lazy("jobs")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['customer_types'] = dict(CUSTOMER_CHOICE)
+        return context
+
+
+def get_customers(request):
+    customer_type = request.GET.get('type')
+    customers = Customer.objects.filter(customer_type=customer_type).values('id', 'customer_name', 'place')
+    customer_list = [{'id': c['id'], 'name': f"{c['customer_name']} - {c['place']}"} for c in customers]
+    return JsonResponse(list(customer_list), safe=False)
 
 
 class JobListView(ListView):

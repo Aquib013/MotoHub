@@ -1,12 +1,11 @@
 from django.db import models
-
 from svc.models import BaseModel
 from svc.constants.places import PLACE_CHOICES
 
-CUSTOMER_CHOICE = (
+CUSTOMER_CHOICE = [
     ("Mechanic", "Mechanic"),
     ("Non-Mechanic", "Non-Mechanic")
-)
+]
 
 
 class Customer(BaseModel):
@@ -20,7 +19,7 @@ class Customer(BaseModel):
     last_billed_amount = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.customer_name
+        return f"{self.customer_name} - {self.place}"
 
 
 
