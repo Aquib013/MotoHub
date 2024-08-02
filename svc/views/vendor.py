@@ -66,8 +66,10 @@ class VendorPaymentHistoryView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vendor = get_object_or_404(Vendor, pk=self.kwargs["pk"])
-        context['vendor'] = vendor
+        vendor = self.get_object()
+        # Ordering the related payments by created_at
+        payments = vendor.vendor_payments.all().order_by('-created_at')
+        context['payments'] = payments
         return context
 
 
@@ -75,10 +77,14 @@ class VendorPurchaseOrdersView(DetailView):
     model = Vendor
     template_name = "vendor/vendor_pos.html"
     context_object_name = "vendor"
+    ordering = ['-created_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['purchase_orders'] = self.object.purchase_orders.all()
+        vendor = self.get_object()
+        # Ordering the related purchase orders by created_at
+        purchase_orders = vendor.purchase_orders.all().order_by('-created_at')
+        context['purchase_orders'] = purchase_orders
         return context
 
 
