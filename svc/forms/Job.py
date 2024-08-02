@@ -35,6 +35,19 @@ class JobForm(forms.ModelForm):
         self.fields['add_payment'].widget.attrs.update({'class': 'payment-field',
                                                         'placeholder': 'Enter the Amount Paid'})
 
+        if 'customer_type' in self.data:
+            try:
+                customer_type = self.data.get('customer_type')
+                self.fields['customer'].queryset = Customer.objects.filter(customer_type=customer_type)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty queryset
+            # If this is an existing job, set the initial customer_type and customer queryset
+        elif self.instance.pk and self.instance.customer:
+            self.fields['customer_type'].initial = self.instance.customer.customer_type
+            self.fields['customer'].initial = self.instance.customer
+            self.fields['customer'].queryset = Customer.objects.filter(
+                customer_type=self.instance.customer.customer_type)
+
     def clean(self):
         cleaned_data = super().clean()
         status = cleaned_data.get('status')
@@ -45,8 +58,10 @@ class JobForm(forms.ModelForm):
             raise forms.ValidationError({
                 'add_payment': 'This field is required when the job status is completed.'
             })
-        if customer and customer.customer_type != customer_type:
-            raise forms.ValidationError("Selected customer does not match the chosen customer type.")
+        if customer and customer_type:
+            if customer.customer_type != customer_type:
+                raise forms.ValidationError("Selected customer does not match the chosen customer type.")
+
         return cleaned_data
 
 

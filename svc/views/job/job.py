@@ -34,6 +34,19 @@ class JobCreateView(CreateView):
         context['customer_types'] = dict(CUSTOMER_CHOICE)
         return context
 
+    def form_valid(self, form):
+        job = form.save(commit=False)
+        job.save()
+        messages.success(self.request, "Job Created Successfully.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Collect all form errors and add them as messages
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{form.fields[field].label}: {error}")
+        return super().form_invalid(form)
+
 
 def get_customers(request):
     customer_type = request.GET.get('type')
@@ -71,6 +84,13 @@ class JobUpdateView(UpdateView):
     form_class = JobForm
     template_name = "job/job_form.html"
     success_url = reverse_lazy("jobs")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if self.object.customer:
+            form.fields['customer_type'].initial = self.object.customer.customer_type
+            form.fields['customer'].queryset = Customer.objects.filter(customer_type=self.object.customer.customer_type)
+        return form
 
     def form_valid(self, form):
         job = form.save(commit=False)
