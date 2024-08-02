@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.db.models import Sum, Case, When, F, DecimalField
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from svc.forms.customer import CustomerForm
@@ -86,4 +87,22 @@ class CustomerJobsView(DetailView):
             'total_dues': total_dues,
             'total_balance': total_balance,
         })
+        return context
+
+
+class CustomerJobDetailView(DetailView):
+    model = Job
+    template_name = "customer/customer_job_detail.html"
+    context_object_name = "job"
+
+    def get_object(self, queryset=None):
+        customer_id = self.kwargs.get('customer_pk')
+        job_id = self.kwargs.get('job_pk')
+        return get_object_or_404(Job, customer_id=customer_id, id=job_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['customer'] = self.object.customer
+        context['services'] = self.object.service_set.all()
+        context['items'] = self.object.jobitem_set.all()
         return context

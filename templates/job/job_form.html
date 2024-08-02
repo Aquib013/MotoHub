@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 
-{% block title %}Update Job - MotoHub{% endblock %}
+{% block title %}{% if form.instance.pk %}Update Job{% else %}Create Job{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -65,9 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(`{% url 'get-customers' %}?type=${customerType}`)
                 .then(response => response.json())
                 .then(data => {
+                    var currentCustomer = customerSelect.value;
                     customerSelect.innerHTML = '<option value="">Select a customer</option>';
                     data.forEach(customer => {
                         var option = new Option(customer.name, customer.id);
+                        if (customer.id == currentCustomer) {
+                            option.selected = true;
+                        }
                         customerSelect.add(option);
                     });
                     customerSelect.disabled = false;
@@ -81,7 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
     customerTypeSelect.addEventListener('change', updateCustomerOptions);
 
     // Initial call to set up the form correctly
-    updateCustomerOptions();
+    if (customerTypeSelect.value) {
+        updateCustomerOptions();
+    }
 
     statusField.addEventListener('change', togglePaymentField);
     togglePaymentField();  // Call once to set initial state

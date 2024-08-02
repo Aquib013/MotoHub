@@ -10,7 +10,6 @@
                 <div class="col-md-6">
                     <p><strong>Job Number:</strong> {{ job.job_no }}</p>
                     <p><strong>Customer:</strong> {{ job.customer.customer_name }}</p>
-                    <p><strong>Status:</strong> <span class="badge bg-{{ job.status|lower }}">{{ job.status }}</span></p>
                     {% if job.status == "Completed" %}
                         <p><strong>Completion Time:</strong> {{ job.job_completion_time|date:"d M Y, H:i" }}</p>
                     {% endif %}
@@ -19,7 +18,7 @@
                 <div class="col-md-6">
                 {% with unique_vehicles=services|unique_vehicles %}
                 {% if unique_vehicles|length == 1 %}
-                <p><strong>Vehicle:</strong> {{ unique_vehicles.0.make }} {{ unique_vehicles.0.name }}</p>
+                <p><strong>Vehicle</strong> {{ unique_vehicles.0.make }} {{ unique_vehicles.0.name }}</p>
                 {% else %}
                 <p><strong>Vehicle:</strong>Multiple Vehicles</p>
                 {% endif %}
@@ -46,7 +45,6 @@
                                 <th>Quantity</th>
                                 <th>Unit Cost</th>
                                 <th>Total Cost</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,12 +56,6 @@
                                     <td>{{ service.quantity }}</td>
                                     <td>Rs.{{ service.unit_service_cost|floatformat:2 }}</td>
                                     <td>Rs.{{ service.service_cost|floatformat:2 }}</td>
-                                    <td>
-                                        <div class="btn-group gap-2" role="group">
-                                            <a href="{% url 'edit_service' service.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                                            <a href="{% url 'delete_service' service.pk %}" class="btn btn-sm btn-danger">Delete</a>
-                                        </div>
-                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -74,8 +66,6 @@
     {% else %}
         <p class="alert alert-info">No services added</p>
     {% endif %}
-    <a href="{% url 'add_service' job.pk %}" class="btn btn-primary mb-4">Add Service</a>
-
     <h2 class="mb-3">Items</h2>
     {% if job.jobitem_set.exists %}
         <div class="card mb-4">
@@ -89,7 +79,6 @@
                                 <th>Quantity</th>
                                 <th>Unit Price</th>
                                 <th>Total Price</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,12 +88,6 @@
                                     <td>{{ job_item.item_quantity }}</td>
                                     <td>Rs.{{ job_item.item_unit_price|floatformat:2 }}</td>
                                     <td>Rs.{{ job_item.item_price|floatformat:2 }}</td>
-                                    <td>
-                                        <div class="btn-group gap-2" role="group">
-                                            <a href="{% url 'edit-job-item' job_item.id %}" class="btn btn-sm btn-warning">Edit</a>
-                                            <a href="{% url 'delete-job-item' job_item.id %}" class="btn btn-sm btn-danger">Delete</a>
-                                        </div>
-                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -115,14 +98,10 @@
     {% else %}
         <p class="alert alert-info">No items added</p>
     {% endif %}
-    <a href="{% url 'add-job-item' job.pk %}" class="btn btn-primary mb-4">Add Item</a>
-
-    <div class="d-flex justify-content-between mb-4">
+    <div class="d-flex justify-content-center">
         <div>
-            <a href="{% url 'jobs' %}" class="btn btn-secondary">Back to Jobs</a>
-            <a href="{% url 'job_edit' job.pk %}" class="btn btn-warning">Edit Job</a>
+            <a href="{% url 'customer_jobs' customer.pk%}" class="btn btn-secondary">Back to Customer Jobs</a>
         </div>
-        <a href="{% url 'generate_invoice' job.id %}" class="btn btn-success">Download Invoice</a>
     </div>
 </div>
 {% endblock %}

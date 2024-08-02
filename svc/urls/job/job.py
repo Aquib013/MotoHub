@@ -18,5 +18,4 @@ job_url_patterns = [
     path("jobs/<int:pk>/edit/", JobUpdateView.as_view(), name="job_edit"),
     path("jobs/<int:pk>/delete/", JobDeleteView.as_view(), name="job_delete"),
     path('jobs/<int:job_id>/invoice/', generate_invoice, name='generate_invoice'),
-
 ]
