@@ -4,50 +4,32 @@
 
 {% block content %}
 <div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-          <h2 class="mb-0">Vendors</h2>
-          <a href="{% url 'add_vendor' %}" class="btn btn-success">Add Vendor</a>
-        </div>
-        <div class="card-body">
-          <form method="get" class="mb-3">
-            <div class="row g-2">
-              <div class="col-md-3">
-                {% render_field filter.form.item_name class="form-control" placeholder="Name" %}
-              </div>
-              <div class="col-md-3">
-                {% render_field filter.form.item_for_vehicle class="form-control" placeholder="Suited For" %}
-              </div>
-              <div class="col-md-3">
-                {% render_field filter.form.item_type class="form-control" placeholder="Type" %}
-              </div>
-<!--              <div class="col-md-3">-->
-<!--                <button type="submit" class="btn btn-primary w-100">Filter</button>-->
-<!--              </div>-->
-            </div>
-          </form>
-
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead class="table-light">
-                <tr>
-                    <th>Firm Name</th>
-                    <th>Vendor Name</th>
-                    <th>Phone</th>
-                    <th>Vendor Balance</th>
-                    <th>Last Purchase</th>
-                    <th>Last Payment Amount</th>
-                    <th>Last Payment date</th>
-                    <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for vendor in vendors %}
-                <tr>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h2 class="mb-3">Vendors</h2>
+                    <a href="{% url 'add_vendor' %}" class="btn btn-success btn-lg">Add Vendor</a>
+                </div>
+                <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-secondary">
+                    <tr>
+                        <th>Firm Name</th>
+            <!--            <th>Vendor Name</th>-->
+                        <th>Phone</th>
+                        <th>Vendor Balance</th>
+                        <th>Last Purchase</th>
+                        <th>Last Payment Amount</th>
+                        <th>Last Payment date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for vendor in vendors %}
+                    <tr>
                         <td>{{ vendor.firm_name }}</td>
-                        <td>{{ vendor.vendor_name }}</td>
+            <!--            <td>{{ vendor.vendor_name }}</td>-->
                         <td>{{ vendor.vendor_contact_no }}</td>
                         <td>{{ vendor.vendor_balance }}</td>
                         <td>{{ vendor.last_purchase_date.date }}</td>
@@ -63,17 +45,16 @@
                             </div>
                         </td>
                     </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="9" class="text-center">No Vendor found.</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+                    {% empty %}
+                    <tr>
+                      <td colspan="9" class="text-center">No Vendor found.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}
