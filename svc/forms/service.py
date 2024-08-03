@@ -16,12 +16,27 @@ class ServiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if job:
             self.fields['job_hidden'].initial = job.pk  # NOQA
-            self.fields['job'] = forms.CharField(initial=job, disabled=False, required=False,
+            self.fields['job'] = forms.CharField(initial=job, disabled=True, required=False,
                                                  widget=forms.TextInput(attrs={'readonly': 'readonly'}))
             self.fields['job'].label = 'Job'
 
-        self.fields['description'].widget = forms.Select(choices=[('', '---------')])
-        self.fields['description'].initial = ''  # Set initial value to empty
+        if self.instance and self.instance.service_type:
+            if self.instance.service_type == 'Machining':
+                choices = MACHINING_CHOICES
+            elif self.instance.service_type == 'Workshop':
+                choices = WORKSHOP_CHOICES
+            else:
+                choices = [('', '---------')]
+
+            self.fields['description'] = forms.ChoiceField(
+                choices=choices,
+                initial=self.instance.description
+            )
+        else:
+            self.fields['description'] = forms.ChoiceField(
+                choices=[('', '---------')],
+                initial=''
+            )
 
     def clean(self):
         cleaned_data = super().clean()

@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var machiningChoices = JSON.parse('{{ machining_choices|safe }}');
     var workshopChoices = JSON.parse('{{ workshop_choices|safe }}');
+    var initialDescription = '{{ form.instance.description|default_if_none:"" }}';
 
     function updateDescriptionChoices() {
         var selectedType = serviceTypeSelect.value;
@@ -63,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 var option = new Option(choice[1], choice[0]);
                 descriptionSelect.add(option);
             });
+        }
+        if (initialDescription) {
+            descriptionSelect.value = initialDescription;
         }
     }
 
