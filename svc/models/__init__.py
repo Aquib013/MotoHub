@@ -9,3 +9,5 @@ from svc.models.service import Service
 from svc.models.vendors import Vendor, VendorPayment
 from svc.models.purchase_order import PurchaseOrder
 from svc.models.purchase_order_item import PurchaseOrderItem
+from svc.models.employee import Employee
+from svc.models.expense import Expense

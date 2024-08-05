@@ -188,6 +188,24 @@ function getCookie(name) {
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link dropdown-toggle text-white" href="#employeesSubmenu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="employeesSubmenu">
+                            <i class="bi bi-file-earmark-text"></i> Employees
+                        </a>
+                        <ul class="collapse nav flex-column" id="employeesSubmenu">
+                            <li class="nav-item"><a class="nav-link py-1 text-white" href="{% url 'employees' %}">View All</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 text-white" href="{% url 'create_employee' %}">Add Employee</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle text-white" href="#expensesSubmenu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="expensesSubmenu">
+                            <i class="bi bi-file-earmark-text"></i> Expenses
+                        </a>
+                        <ul class="collapse nav flex-column" id="expensesSubmenu">
+                            <li class="nav-item"><a class="nav-link py-1 text-white" href="{% url 'expense_list' %}">View All</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 text-white" href="{% url 'expense_create' %}">Add Expense</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" class="nav-link">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm">

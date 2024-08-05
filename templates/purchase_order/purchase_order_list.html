@@ -26,7 +26,7 @@
                 {% for order in purchase_orders %}
                 <tr>
                     <td>{{ order.po_number }}</td>
-                    <td>{{ order.vendor.vendor_name }}</td>
+                    <td>{{ order.vendor.firm_name }}</td>
                     <td>{{ order.created_at.date }}</td>
                     <td>{{ order.po_amount }}</td>
                     <td>

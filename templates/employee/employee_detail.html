@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Employee Detail{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Employee Details</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <th scope="row">Name</th>
+                <td>{{ employee.emp_name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Contact</th>
+                <td>{{ employee.emp_contact }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Aadhaar number</th>
+                <td>{{ employee.emp_aadhaar }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Address</th>
+                <td>{{ employee.emp_address }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Salary</th>
+                <td>{{ employee.emp_salary }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Last Payment</th>
+                <td>{{ employee.emp_last_payment }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Last Payment Date</th>
+                <td>{{ employee.emp_last_payment_date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex gap-2 justify-content-center">
+            <a href="{% url 'employees' %}" class="btn btn-secondary">Back</a>
+            <a href="{% url 'employee-payments' employee.pk %}" class="btn btn-primary">View payments</a>
+            <a href="{% url 'employee_update' employee.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'employee_delete' employee.pk %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

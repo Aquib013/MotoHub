@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Expenses{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+          <h2 class="mb-3">Expenses</h2>
+          <a href="{% url 'expense_create' %}" class="btn btn-success btn-lg">Add Expense</a>
+        </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-secondary">
+                <tr>
+                  <th>Expense Type</th>
+                  <th>Expense Date
+                  <th>Employee/Other</th>
+                  <th>Amount</th>
+                  <th>Comment</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for expense in expenses %}
+                <tr>
+                  <td>{{ expense.expense_type }}</td>
+                  <td>{{ expense.created_at.date }}</td>
+                  <td>
+                    {% if expense.expense_type == 'Employee Payment' %}
+                      {{ expense.employee.emp_name }}
+                    {% elif expense.expense_type == 'Other' %}
+                      {{ expense.expense_title }}
+                    {% endif %}
+                  </td>
+                  <td>{{ expense.amount }}</td>
+                  <td>{{ expense.comment }}</td>
+                  <td>
+                    <div class="btn-group d-flex gap-2" role="group" aria-label="Item actions">
+                      <a href="{% url 'expense_edit' expense.pk %}" class="btn btn-sm btn-info">Edit</a>
+                      <a href="{% url 'expense_delete' expense.pk %}" class="btn btn-sm btn-danger">Delete</a>
+
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="10" class="text-center">No Expenses found.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
