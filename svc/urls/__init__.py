@@ -6,6 +6,7 @@ from svc.urls.purchase_order.purchase_order import purchase_order_url_patterns
 from svc.urls.item.item import item_url_patterns
 from svc.urls.employee.employee import employee_url_patterns
 from svc.urls.expense.expense import expense_urlpatterns
+from svc.urls.insights.insight import insight_urlpatterns
 
 urlpatterns = []
 urlpatterns += Signup_urlpatterns
@@ -16,6 +17,7 @@ urlpatterns += purchase_order_url_patterns
 urlpatterns += item_url_patterns
 urlpatterns += employee_url_patterns
 urlpatterns += expense_urlpatterns
+urlpatterns += insight_urlpatterns
 
 
 

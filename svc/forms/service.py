@@ -20,34 +20,12 @@ class ServiceForm(forms.ModelForm):
                                                  widget=forms.TextInput(attrs={'readonly': 'readonly'}))
             self.fields['job'].label = 'Job'
 
-        if self.instance and self.instance.service_type:
-            if self.instance.service_type == 'Machining':
-                choices = MACHINING_CHOICES
-            elif self.instance.service_type == 'Workshop':
-                choices = WORKSHOP_CHOICES
-            else:
-                choices = [('', '---------')]
-
-            self.fields['description'] = forms.ChoiceField(
-                choices=choices,
-                initial=self.instance.description
-            )
-        else:
-            self.fields['description'] = forms.ChoiceField(
-                choices=[('', '---------')],
-                initial=''
-            )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        service_type = cleaned_data.get('service_type')
-        description = cleaned_data.get('description')
-
+        service_type = self.initial.get('service_type', None) or self.data.get('service_type', None)
         if service_type == 'Machining':
-            if description not in dict(MACHINING_CHOICES):
-                raise forms.ValidationError('Invalid description for Machining service type')
+            choices = MACHINING_CHOICES
         elif service_type == 'Workshop':
-            if description not in dict(WORKSHOP_CHOICES):
-                raise forms.ValidationError('Invalid description for Workshop service type')
+            choices = WORKSHOP_CHOICES
+        else:
+            choices = [('', '---------')]
 
-        return cleaned_data
+        self.fields['description'] = forms.ChoiceField(choices=choices)

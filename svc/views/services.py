@@ -7,13 +7,18 @@ from django.views.generic import FormView, UpdateView, DeleteView
 
 from svc.forms import ServiceForm
 from svc.models import Service, Job
-from svc.models.service import MACHINING_CHOICES, WORKSHOP_CHOICES
+from svc.models.service import MACHINING_CHOICES, WORKSHOP_CHOICES, SERVICE_TYPE
 
 
 class ServiceCreateView(FormView):
     model = Service
     form_class = ServiceForm
     template_name = 'services/service_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['job'] = get_object_or_404(Job, pk=self.kwargs['pk'])
+        return kwargs
 
     def form_valid(self, form):
         job_id = self.kwargs['pk']
@@ -34,11 +39,6 @@ class ServiceCreateView(FormView):
                 for error in errors:
                     messages.error(self.request, f"{field.capitalize()}: {error}")
         return super().form_invalid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['job'] = get_object_or_404(Job, pk=self.kwargs['pk'])
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
