@@ -33,4 +33,4 @@ class Item(BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.item_name}'
+        return self.item_name
