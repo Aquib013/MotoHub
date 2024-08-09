@@ -3,95 +3,112 @@
 {% block title %}MotoHub Dashboard{% endblock %}
 
 {% block content %}
-<div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 border-bottom">
-            <h1 class="h2">Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group me-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                    <i class="bi bi-calendar"></i>
-                    This week
-                </button>
+<div class="container">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 border-bottom">
+        <h1 class="h2">Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
+        <div class="btn-lg-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+                <button onclick="setPeriod('daily')" class="btn btn-sm btn-outline-secondary">Today</button>
+                <button onclick="setPeriod('weekly')" class="btn btn-sm btn-outline-secondary">Weekly</button>
+                <button onclick="setPeriod('monthly')" class="btn btn-sm btn-outline-secondary">Monthly</button>
             </div>
+            <input type="date" id="insight-date" onchange="setDate()" value="{{ selected_date|date:'Y-m-d' }}" class="btn btn-sm btn-outline-secondary">
         </div>
-        <div class="row">
-            <h2 class="mb-4">Insights for {{ today|date:"F j, Y" }}</h2>
-            <div class="row mb-4 ">
-                <div class="col-12">
-                    <div class="card bg-primary text-white ">
-                        <div class="card-body">
-                            <h2 class="card-title text-center"><strong>Total Income: ₹ {{ total_income }}</strong></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
+    </div>
+
+    <div class="row">
+        <h2 class="mb-4">Insights from {{ start_date|date:"F j, Y" }} to {{ end_date|date:"F j, Y" }}</h2>
+        <!-- Cards displaying insights -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-primary text-white">
                     <div class="card-body">
-                        <h5 class="card-title"><strong>Revenue By Service</strong></h5>
-                        <p class="card-text text-primary">₹ {{ total_service_revenue }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Revenue By Lathe</strong></h5>
-                        <p class="card-text text-primary">₹ {{ machining_revenue }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Revenue By Workshop</strong></h5>
-                        <p class="card-text text-primary">₹ {{ workshop_revenue }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Amount of Item Sold</strong></h5>
-                        <p class="card-text text-primary">₹ {{ total_item_revenue }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Profit By Item</strong></h5>
-                        <p class="card-text text-primary">₹ {{ total_profit_by_item }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Amount of Item Purchased</strong></h5>
-                        <p class="card-text text-primary">₹ {{ item_purchased }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Total Revenue</strong></h5>
-                        <p class="card-text text-primary">₹ {{ total_revenue }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Total Expense</strong></h5>
-                        <p class="card-text text-primary">₹ {{ total_expense }}</p>
+                        <h2 class="card-title text-center"><strong>Total Income: ₹ {{ total_income }}</strong></h2>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Other cards for insights as previously defined -->
+        <!-- ... (the rest of your insight cards) ... -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Revenue By Service</strong></h5>
+                    <p class="card-text text-primary">₹ {{ total_service_revenue }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Revenue By Lathe</strong></h5>
+                    <p class="card-text text-primary">₹ {{ machining_revenue }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Revenue By Workshop</strong></h5>
+                    <p class="card-text text-primary">₹ {{ workshop_revenue }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Amount of Item Sold</strong></h5>
+                    <p class="card-text text-primary">₹ {{ total_item_revenue }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Profit By Item</strong></h5>
+                    <p class="card-text text-primary">₹ {{ total_profit_by_item }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Amount of Item Purchased</strong></h5>
+                    <p class="card-text text-primary">₹ {{ item_purchased }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Total Revenue</strong></h5>
+                    <p class="card-text text-primary">₹ {{ total_revenue }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Total Expense</strong></h5>
+                    <p class="card-text text-primary">₹ {{ total_expense }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function setPeriod(period) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('period', period);
+        window.location.href = url.href;
+    }
+
+    function setDate() {
+        const date = document.getElementById('insight-date').value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('date', date);
+        window.location.href = url.href;
+    }
+</script>
 {% endblock %}
