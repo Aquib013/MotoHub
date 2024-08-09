@@ -19,11 +19,13 @@ from django.contrib.auth.views import LoginView
 from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
 
+from svc.views.dashboard import DashboardView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("dashboard/", TemplateView.as_view(template_name="dashboard.html"), name="dashboard"),
     path("", include("svc.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("", DashboardView.as_view(), name="dashboard"),
     path('', RedirectView.as_view(url='/accounts/login/', permanent=False)),  # Redirect all other URLs to login
 
 ]
